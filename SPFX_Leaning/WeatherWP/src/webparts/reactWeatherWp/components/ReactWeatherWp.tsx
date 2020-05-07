@@ -3,6 +3,30 @@ import styles from './ReactWeatherWp.module.scss';
 import { IReactWeatherWpProps } from './IReactWeatherWpProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 
+import { CityWeather } from './CityWeather';
+import { ICity } from './ICity';
+
+const cities: ICity[] = [
+  {
+    name: "Lansing",
+    temp:15.2,
+    humidity: 80.4,
+    climate:"Cloudy"
+  },
+  {
+    name: "Detoit",
+    temp:20.1,
+    humidity:85.4,
+    climate:"Sunny"
+  },
+  {
+    name: "NewYork",
+    temp:18.4,
+    humidity:70.7,
+    climate:"Cloudy"
+  }
+];
+
 export default class ReactWeatherWp extends React.Component<IReactWeatherWpProps, {}> {
   public render(): React.ReactElement<IReactWeatherWpProps> {
     return (
@@ -10,10 +34,14 @@ export default class ReactWeatherWp extends React.Component<IReactWeatherWpProps
         <div className={ styles.container }>
           <div className={ styles.row }>
             <div className={ styles.column }>
-              <span className={ styles.title }>Welcome to SharePoint!</span>
-              <p className={ styles.subTitle }>Customize SharePoint experiences using Web Parts.</p>
+              <span className={ styles.title }>Welcome to Weather WP!</span>
+              <p className={ styles.subTitle }>Cuurent Weather in City</p>
               <div>
-
+                <div> Waether for Cities</div>
+                <br/>
+                    {/*map function call every element in the array and iterate through
+                     every item and get html template from Cityweather.TS */}
+                    { cities.map ((item) =><CityWeather city = { item } /> ) }
               </div>             
             </div>
           </div>
