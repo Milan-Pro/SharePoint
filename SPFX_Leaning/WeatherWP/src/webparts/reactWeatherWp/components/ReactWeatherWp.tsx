@@ -8,20 +8,20 @@ import { ICity } from './ICity';
 
 const cities: ICity[] = [
   {
-    name: "Lansing",
-    temp:15.2,
+    name: "Ahmedabad",
+    temp: 25.2,
     humidity: 80.4,
     climate:"Cloudy"
   },
   {
-    name: "Detoit",
-    temp:20.1,
+    name: "Vadodara",
+    temp:23.1,
     humidity:85.4,
     climate:"Sunny"
   },
   {
-    name: "NewYork",
-    temp:18.4,
+    name: "Surat",
+    temp: 21.4,
     humidity:70.7,
     climate:"Cloudy"
   }

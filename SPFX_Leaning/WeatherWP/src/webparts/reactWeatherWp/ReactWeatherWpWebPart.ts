@@ -15,6 +15,8 @@ export interface IReactWeatherWpWebPartProps {
   description: string;
 }
 
+//This is parent frame Webpart which will call ReactWeatherWp element that 
+//we have created in ReactWeatherWp.tsx file 
 export default class ReactWeatherWpWebPart extends BaseClientSideWebPart <IReactWeatherWpWebPartProps> {
 
   public render(): void {

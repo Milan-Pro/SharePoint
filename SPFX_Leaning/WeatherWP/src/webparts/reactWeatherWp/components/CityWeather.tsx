@@ -9,13 +9,13 @@ export interface ICityWeatherProps{
 }
 
 //
-export const CityWeather : FunctionComponent<ICityWeatherProps> = (props: ICityWeatherProps) : any => {
-    
+export const CityWeather : FunctionComponent<ICityWeatherProps> = (props: ICityWeatherProps) : React.ReactElement => 
+  
      <div>
-      <span className="${ styles.title }"> ${ this.props.city.name }</span>
-      <span className="${ styles.title }"> ${ this.props.city.temp }</span>
-      <span className="${ styles.title }"> ${ this.props.city.humidity }</span>
-      <span className="${ styles.title }"> ${ this.props.city.climate }</span>
+      <span className="${ styles.title }"> ${ props.city.name }</span>
+      <span className="${ styles.title }"> ${ props.city.temp }</span>
+      <span className="${ styles.title }"> ${ props.city.humidity }</span>
+      <span className="${ styles.title }"> ${ props.city.climate }</span>
      </div>
     
-}
+//since this is functional component it doesn't need this.props other wise it need this.props
