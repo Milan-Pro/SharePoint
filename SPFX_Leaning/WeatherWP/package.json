@@ -38,5 +38,12 @@
   },
   "resolutions": {
     "@types/react": "16.8.8"
-  }
+  },
+  "description": "This is where you include your WebPart documentation.",
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
