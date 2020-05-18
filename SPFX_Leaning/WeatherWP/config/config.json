@@ -17,11 +17,20 @@
           "manifest": "./src/webparts/reactWeatherWp/ReactWeatherWpWebPart.manifest.json"
         }
       ]
+    },
+    "customer-data-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/customerData/CustomerDataWebPart.js",
+          "manifest": "./src/webparts/customerData/CustomerDataWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "WeatherWpWebPartStrings": "lib/webparts/weatherWp/loc/{locale}.js",
-    "ReactWeatherWpWebPartStrings": "lib/webparts/reactWeatherWp/loc/{locale}.js"
+    "ReactWeatherWpWebPartStrings": "lib/webparts/reactWeatherWp/loc/{locale}.js",
+    "CustomerDataWebPartStrings": "lib/webparts/customerData/loc/{locale}.js"
   }
 }
