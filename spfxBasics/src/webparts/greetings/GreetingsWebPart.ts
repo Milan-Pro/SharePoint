@@ -9,34 +9,31 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import styles from './GreetingsWebPart.module.scss';
 import * as strings from 'GreetingsWebPartStrings';
 
-export interface IGreetingsWebPartProps {
-  description: string;
+export interface IGreetingWebPartProps {
+  message: string;
 }
-
-export default class GreetingsWebPart extends BaseClientSideWebPart <IGreetingsWebPartProps> {
-
+​
+export default class GreetingWebPart extends BaseClientSideWebPart <IGreetingWebPartProps> {
+​
   public render(): void {
     this.domElement.innerHTML = `
       <div class="${ styles.greetings }">
-    <div class="${ styles.container }">
-      <div class="${ styles.row }">
-        <div class="${ styles.column }">
-          <span class="${ styles.title }">Welcome to SharePoint!</span>
-  <p class="${ styles.subTitle }">Customize SharePoint experiences using Web Parts.</p>
-    <p class="${ styles.description }">${escape(this.properties.description)}</p>
-      <a href="https://aka.ms/spfx" class="${ styles.button }">
-        <span class="${ styles.label }">Learn more</span>
-          </a>
+        <div class="${ styles.container }">
+          <div class="${ styles.row }">
+            <div class="${ styles.column }">
+              <span class="${ styles.title }">Greeting WebPart</span>
+              <p class="${ styles.subTitle }">This is my first SPFx WebPart</p>
+              <p class="${ styles.description }">${escape(this.properties.message)}</p>
+            </div>
           </div>
-          </div>
-          </div>
-          </div>`;
+        </div>
+      </div>`;
   }
-
+​
   protected get dataVersion(): Version {
   return Version.parse('1.0');
 }
-
+​
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
   return {
     pages: [
@@ -48,7 +45,7 @@ export default class GreetingsWebPart extends BaseClientSideWebPart <IGreetingsW
           {
             groupName: strings.BasicGroupName,
             groupFields: [
-              PropertyPaneTextField('description', {
+              PropertyPaneTextField('message', {
                 label: strings.DescriptionFieldLabel
               })
             ]
