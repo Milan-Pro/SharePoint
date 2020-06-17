@@ -22,7 +22,7 @@ export default class GreetingWebPart extends BaseClientSideWebPart <IGreetingWeb
           <div class="${ styles.row }">
             <div class="${ styles.column }">
               <span class="${ styles.title }">Greeting WebPart</span>
-              <p class="${ styles.subTitle }">This is my first SPFx WebPart</p>
+              <p class="${ styles.subTitle }">Greetings to all learners.</p>
               <p class="${ styles.description }">${escape(this.properties.message)}</p>
             </div>
           </div>
