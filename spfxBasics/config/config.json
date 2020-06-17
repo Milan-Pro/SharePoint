@@ -17,11 +17,29 @@
           "manifest": "./src/webparts/customers/CustomersWebPart.manifest.json"
         }
       ]
+    },
+    "products-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/products/ProductsWebPart.js",
+          "manifest": "./src/webparts/products/ProductsWebPart.manifest.json"
+        }
+      ]
+    },
+    "suppliers-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/suppliers/SuppliersWebPart.js",
+          "manifest": "./src/webparts/suppliers/SuppliersWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "GreetingsWebPartStrings": "lib/webparts/greetings/loc/{locale}.js",
-    "CustomersWebPartStrings": "lib/webparts/customers/loc/{locale}.js"
+    "CustomersWebPartStrings": "lib/webparts/customers/loc/{locale}.js",
+    "ProductsWebPartStrings": "lib/webparts/products/loc/{locale}.js",
+    "SuppliersWebPartStrings": "lib/webparts/suppliers/loc/{locale}.js"
   }
 }
