@@ -33,6 +33,22 @@
           "manifest": "./src/webparts/suppliers/SuppliersWebPart.manifest.json"
         }
       ]
+    },
+    "jq-demo-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/jqDemo/JqDemoWebPart.js",
+          "manifest": "./src/webparts/jqDemo/JqDemoWebPart.manifest.json"
+        }
+      ]
+    },
+    "property-pane-demo-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/propertyPaneDemo/PropertyPaneDemoWebPart.js",
+          "manifest": "./src/webparts/propertyPaneDemo/PropertyPaneDemoWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -40,6 +56,8 @@
     "GreetingsWebPartStrings": "lib/webparts/greetings/loc/{locale}.js",
     "CustomersWebPartStrings": "lib/webparts/customers/loc/{locale}.js",
     "ProductsWebPartStrings": "lib/webparts/products/loc/{locale}.js",
-    "SuppliersWebPartStrings": "lib/webparts/suppliers/loc/{locale}.js"
+    "SuppliersWebPartStrings": "lib/webparts/suppliers/loc/{locale}.js",
+    "JqDemoWebPartStrings": "lib/webparts/jqDemo/loc/{locale}.js",
+    "PropertyPaneDemoWebPartStrings": "lib/webparts/propertyPaneDemo/loc/{locale}.js"
   }
 }

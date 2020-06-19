@@ -12,6 +12,12 @@ import * as strings from 'ProductsWebPartStrings';
 import { IProduct } from "../../common/IProduct";
 import ProductService from "../../services/ProductService";
 ​
+import * as $ from "jquery";
+import 'datatables.net';
+​
+//import { SPComponentLoader } from "@microsoft/sp-loader";
+
+
 export interface IProductsWebPartProps {
   description: string;
 }
@@ -28,47 +34,73 @@ export default class ProductsWebPart extends BaseClientSideWebPart <IProductsWeb
   }
 ​
   public render(): void {
-    this.domElement.innerHTML = `
+    $(this.domElement).html(`
       <div class="${ styles.products }">
         <div class="${ styles.container }">
           <div class="${ styles.row }">
             <div class="${ styles.column }">
               <span class="${ styles.title }">PROUCTS!</span>
                 <p class="${ styles.subTitle }">LIST OF PRODUCTS.</p>
-                <div id="output">
-                  Loading...
-                </div>
+                <table id="output" width="100%" class="table table-bordered" id="dataTable">
+                </table>
             </div>
           </div>
         </div>
-      </div>`;
+      </div>`);
 ​
-      this.provider.getProducts().then((data: IProduct[]) => {
-        this.domElement.querySelector("#output").innerHTML = this.getHTML(data);
+      // Load the DataTable CSS
+    //SPComponentLoader.loadCss("https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css");
 ​
-      }).catch((err) => {
-        this.domElement.querySelector("#output").innerHTML = `<span>Error loading data : ${ err }</span>`;
+    this.provider.getProducts().then((products: IProduct[]) => {
+      $("#output",this.domElement).DataTable({
+          data: products,
+          columns:[
+            {title : 'ID'},
+            {title : 'Name'},
+            {title : 'Price'},
+            {title : 'Stock'},
+          ],
+          columnDefs: [{
+            "defaultContent": "-",
+            "targets": "_all"
+        }]
       });
-  }
+    ​
+      //$("#output", this.domElement).html(this.getHTMLTable(data));
+    }).catch((err) => {
+      $("#output", this.domElement).html(`<span>Error loading data : ${ err }</span>`);
+    });
+}
+
 ​
 
-  private getHTML(items: IProduct[]) : string {
-    let html : string = "";
+  private getHTMLTable(items: IProduct[]) : string {
+    let html : string = `<table>
+              <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+              </tr>
+    `;
+  ​
     for(let p of items) {
-      html += `<div class="${ styles.prodbox }">
-                  ${ p.ProductID } <br/>
-                  ${ p.ProductName } <br/>
-                  ${ p.UnitPrice } <br/>
-                  ${ p.UnitsInStock }
-              </div>`;
+      html += `<tr>
+                  <td>${ p.ProductID }</td>
+                  <td>${ p.ProductName }</td>
+                  <td>${ p.UnitPrice }</td>
+                  <td>${ p.UnitsInStock }</td>
+              </tr>`;
     }
-  return html;
+  ​
+    return html + "</table>";
+  ​
   }
 
   
   protected get dataVersion(): Version {
   return Version.parse('1.0');
-}
+  }
 ​
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
   return {
