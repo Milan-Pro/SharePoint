@@ -10,6 +10,6 @@ export interface ISupplier{
     Country: string;
     Phone: string;
     Fax: string;
-    HomePage: string
+    HomePage: string;
 }
     

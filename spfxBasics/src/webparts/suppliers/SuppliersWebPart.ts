@@ -9,8 +9,8 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import styles from './SuppliersWebPart.module.scss';
 import * as strings from 'SuppliersWebPartStrings';
 
-import { ISupplier } from '../../common/ISupplier'
-import SupplierService from '../../services/SupplierService'
+import { ISupplier } from '../../common/ISupplier';
+import SupplierService from '../../services/SupplierService';
 
 export interface ISuppliersWebPartProps {
   description: string;
