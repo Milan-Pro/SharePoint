@@ -11,8 +11,8 @@ import * as strings from 'CustomerDataWebPartStrings';
 import CustomerData from './components/CustomerData';
 import { ICustomerDataProps } from './components/ICustomerDataProps';
 
+/* This is the interface for webapart property*/
 export interface ICustomerDataWebPartProps {
-  description: string;
   listName: string;
 }
 
@@ -22,8 +22,7 @@ export default class CustomerDataWebPart extends BaseClientSideWebPart <ICustome
     const element: React.ReactElement<ICustomerDataProps> = React.createElement(
       CustomerData,
       {
-        description: this.properties.description,
-        listName: "Customers", /*error comes due to missing interface in icustmerDta interface component*/
+        listName: this.properties.listName,/*error comes due to missing interface in icustmerDta interface component*/
         context: this.context
       }
     );
@@ -50,8 +49,8 @@ export default class CustomerDataWebPart extends BaseClientSideWebPart <ICustome
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
+                PropertyPaneTextField('listName', {
+                  label: "List Name"
                 })
               ]
             }

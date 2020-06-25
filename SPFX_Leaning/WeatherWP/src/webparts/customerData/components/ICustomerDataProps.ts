@@ -1,4 +1,4 @@
 export interface ICustomerDataProps {
-  description: string;
   listName: string;
+  context: any;
 }
