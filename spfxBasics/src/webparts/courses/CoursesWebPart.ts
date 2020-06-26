@@ -1,0 +1,150 @@
+import { Version } from '@microsoft/sp-core-library';
+import {
+  IPropertyPaneConfiguration,
+  PropertyPaneTextField,
+  PropertyPaneDropdown,
+  IPropertyPaneDropdownOption
+} from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+import { escape } from '@microsoft/sp-lodash-subset';
+
+import { SPHttpClient, SPHttpClientResponse } from "@microsoft/sp-http";
+
+import styles from './CoursesWebPart.module.scss';
+import * as strings from 'CoursesWebPartStrings';
+
+import { ICourse } from "../../common/ICourse";
+​
+import { CourseService } from  "../../services/CourseService";
+
+export interface ICoursesWebPartProps {
+  count: number;
+  category: string;
+}
+
+export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPartProps> {
+  private provider : CourseService;
+  private catValues : IPropertyPaneDropdownOption[] = [];
+​  
+  protected onInit() : Promise<void> {
+    //Create Course Service
+    this.provider = new CourseService(`${this.context.pageContext.web.absoluteUrl}/_api/Lists/GetByTitle('Courses')/Items`, this.context );
+  ​
+    // One call for Category choic values for the
+    // Prop pane dropdown
+    this.provider.getCategories()
+      .then((data : string[]) => {
+          this.catValues = data.map((item => {
+            return {
+              key: item,
+              text: item
+            } as IPropertyPaneDropdownOption;
+          }));
+​
+          console.log("Prop Pane Options : " + JSON.stringify(this.catValues));
+      });
+​
+    this.provider.addCourse({
+      CourseID: 7001,
+      Category: "Web Development",
+      Title: "ASP.NET MVC",
+      Description: "ASP.NET MVC Programming",
+      Duration: 20,
+      Price:99,
+      Technology: "ASP.NET"
+    }).then(item => {
+      console.log("Added item : "+ JSON.stringify(item));
+    });
+​
+    return Promise.resolve();
+  }
+
+
+  public render(): void {
+    this.domElement.innerHTML = `
+        <div class="${ styles.courses }">
+          <div class="${ styles.container }">
+            <div class="${ styles.row }">
+              <div class="${ styles.column }">
+                <span class="${ styles.title }">Courses!</span>
+                <p class="${ styles.subTitle }">Course data from SP List.</p>
+                <div id="output">Loading...</div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+
+         // Get the Courses
+         this.provider.getData(this.properties.count, this.properties.category)
+         .then((courses : ICourse[]) => {
+           this.domElement.querySelector("#output").innerHTML = this.getHTML(courses);
+         });  
+
+  }
+​  
+//building html to load data
+  private getHTML(courses: ICourse[]) : string {
+    let html ="";
+​
+    for(let c of courses) {
+      html += `
+        <div class="${ styles.coursebox }">
+          Course ID: ${ c.CourseID } <br/>
+          Title: ${ c.Title } <br/>
+          Category: ${c.Category} </br>
+          Description: ${ c.Description } <br/>
+          Technology: ${ c.Technology } <br/>
+          Price: ${ c.Price } <br/>
+          Duration ${ c.Duration }
+        </div>
+      `;
+    }
+​
+    return html;
+  }
+
+  protected get dataVersion(): Version {
+  return Version.parse('1.0');
+  }
+
+  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    return {
+      pages: [
+        {
+          header: {
+            description: strings.PropertyPaneDescription
+          },
+          groups: [
+            {
+              groupName: strings.BasicGroupName,
+              groupFields: [
+                PropertyPaneTextField('count', {
+                  label: "Count",
+                  onGetErrorMessage: (value: string) =>{
+                    let c : number = parseInt(value);
+  ​
+                    if(isNaN(c)) {
+                      return "Invalid number";
+                    }
+  ​
+                    if(c <=0) {
+                      return "Count must be > 0";
+                    }
+  ​
+                    return "";
+                  },
+                  deferredValidationTime: 300
+                }),
+                PropertyPaneDropdown('category',{
+                  label: "Category",
+                  options:this.catValues        
+                })
+
+              ]
+            }
+          ]
+        }
+      ]
+    };
+  }
+}

@@ -49,6 +49,22 @@
           "manifest": "./src/webparts/propertyPaneDemo/PropertyPaneDemoWebPart.manifest.json"
         }
       ]
+    },
+    "sp-pro-pane-extra-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/spProPaneExtra/SpProPaneExtraWebPart.js",
+          "manifest": "./src/webparts/spProPaneExtra/SpProPaneExtraWebPart.manifest.json"
+        }
+      ]
+    },
+    "courses-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/courses/CoursesWebPart.js",
+          "manifest": "./src/webparts/courses/CoursesWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -58,6 +74,8 @@
     "ProductsWebPartStrings": "lib/webparts/products/loc/{locale}.js",
     "SuppliersWebPartStrings": "lib/webparts/suppliers/loc/{locale}.js",
     "JqDemoWebPartStrings": "lib/webparts/jqDemo/loc/{locale}.js",
-    "PropertyPaneDemoWebPartStrings": "lib/webparts/propertyPaneDemo/loc/{locale}.js"
+    "PropertyPaneDemoWebPartStrings": "lib/webparts/propertyPaneDemo/loc/{locale}.js",
+    "SpProPaneExtraWebPartStrings": "lib/webparts/spProPaneExtra/loc/{locale}.js",
+    "CoursesWebPartStrings": "lib/webparts/courses/loc/{locale}.js"
   }
 }
