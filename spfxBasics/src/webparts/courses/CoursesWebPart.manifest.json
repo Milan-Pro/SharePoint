@@ -21,7 +21,7 @@
     "description": { "default": "Displays Course List Data" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "count":"count",
+      "count":"100",
       "cateory":"category"
     }
   }]

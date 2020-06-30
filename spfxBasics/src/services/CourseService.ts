@@ -21,6 +21,40 @@ export class CourseService {
         });
     }
 
+    // https:/.../_api/Lists/GetByTitle('Courses')/Items(10)
+​
+    public updateCourse(id: number, item: ICourse) : Promise<boolean> {
+    return this.context.spHttpClient.post(this.url + `(${id})`,SPHttpClient.configurations.v1,{
+        headers: {
+            "Content-Type" : "application/json",
+            "Accept" : "application/json",
+            "X-Http-Method" : "PATCH",
+            "IF-Match" : '*'
+        },
+        body: JSON.stringify(item)
+    }).then(resp=> {
+        return resp.ok;
+    }).catch(err => {
+        //console.log("Error updating Course");
+        return false;
+    });
+    }
+    ​
+    public deleteCourse(id: number) : Promise<boolean> {
+    return this.context.spHttpClient.post(this.url + `(${id})`,SPHttpClient.configurations.v1,{
+        headers: {
+            "Accept" : "application/json",
+            "X-Http-Method" : "DELETE",
+            "IF-Match" : '*'
+        }
+    }).then(resp=> {
+        return resp.ok;
+    }).catch(err => {
+        console.log("Error deleting Course");
+        return false;
+    });
+    }
+
 
      //Getting Data from Sharepoint with httpclient
     public getData(count: number=100, category? : string) : Promise<ICourse[]> {
@@ -37,7 +71,7 @@ export class CourseService {
         .then((resp: SPHttpClientResponse) =>{ // that is reasonthis extran then with json response require.
             return resp.json();
           }).then(data => {
-              console.log(JSON.stringify(data));
+              //console.log(JSON.stringify(data));
               return data.value as ICourse[];
           }).catch(err => {
             console.log("getData()-> Error in REST Call : "+err);
@@ -67,7 +101,7 @@ export class CourseService {
     public getItemById(id: number) : Promise<ICourse> {
         let url = this.url;
         
-        url +=  `&$filter=ID eq ${ id }`;
+        url +=  `?$filter=ID eq ${ id }`;
         return this.context.spHttpClient.get(url,SPHttpClient.configurations.v1)
           .then((resp : SPHttpClientResponse) => {
             return resp.json();
@@ -86,7 +120,7 @@ export class CourseService {
           ).then(resp=> {
             return resp.json();
           }).then(data => {
-            console.log(JSON.stringify(data));
+            //console.log(JSON.stringify(data));
     
             return data.value[0].Choices as string[];
           });
