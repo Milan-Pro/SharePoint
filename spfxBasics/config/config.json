@@ -65,6 +65,22 @@
           "manifest": "./src/webparts/courses/CoursesWebPart.manifest.json"
         }
       ]
+    },
+    "sass-demo-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/sassDemo/SassDemoWebPart.js",
+          "manifest": "./src/webparts/sassDemo/SassDemoWebPart.manifest.json"
+        }
+      ]
+    },
+    "pn-p-demo-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/pnPDemo/PnPDemoWebPart.js",
+          "manifest": "./src/webparts/pnPDemo/PnPDemoWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -76,6 +92,8 @@
     "JqDemoWebPartStrings": "lib/webparts/jqDemo/loc/{locale}.js",
     "PropertyPaneDemoWebPartStrings": "lib/webparts/propertyPaneDemo/loc/{locale}.js",
     "SpProPaneExtraWebPartStrings": "lib/webparts/spProPaneExtra/loc/{locale}.js",
-    "CoursesWebPartStrings": "lib/webparts/courses/loc/{locale}.js"
+    "CoursesWebPartStrings": "lib/webparts/courses/loc/{locale}.js",
+    "SassDemoWebPartStrings": "lib/webparts/sassDemo/loc/{locale}.js",
+    "PnPDemoWebPartStrings": "lib/webparts/pnPDemo/loc/{locale}.js"
   }
 }

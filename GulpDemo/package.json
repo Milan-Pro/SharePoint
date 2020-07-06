@@ -1,0 +1,25 @@
+{
+  "name": "gulpdemo",
+  "version": "1.0.0",
+  "description": "Gulp and Sass demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Milan-Pro/SharePoint.git"
+  },
+  "keywords": [
+    "Gulp",
+    "and",
+    "Sass",
+    "files"
+  ],
+  "author": "Milan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Milan-Pro/SharePoint/issues"
+  },
+  "homepage": "https://github.com/Milan-Pro/SharePoint#readme"
+}

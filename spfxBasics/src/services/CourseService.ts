@@ -1,6 +1,7 @@
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { ICourse } from "../common/ICourse";
-import  { SPHttpClient, SPHttpClientResponse} from "@microsoft/sp-http";
+import  { SPHttpClient, SPHttpClientResponse, ISPHttpClientOptions} from "@microsoft/sp-http";
+
 
 export class CourseService {
 
@@ -23,13 +24,13 @@ export class CourseService {
 
     // https:/.../_api/Lists/GetByTitle('Courses')/Items(10)
 ​
-    public updateCourse(id: number, item: ICourse) : Promise<boolean> {
+    public updateCourse(id: number, item: ICourse, etag: string) : Promise<boolean> {
     return this.context.spHttpClient.post(this.url + `(${id})`,SPHttpClient.configurations.v1,{
         headers: {
             "Content-Type" : "application/json",
             "Accept" : "application/json",
             "X-Http-Method" : "PATCH",
-            "IF-Match" : '*'
+            "IF-Match" : etag
         },
         body: JSON.stringify(item)
     }).then(resp=> {
@@ -40,12 +41,12 @@ export class CourseService {
     });
     }
     ​
-    public deleteCourse(id: number) : Promise<boolean> {
+    public deleteCourse(id: number, etag: string) : Promise<boolean> {
     return this.context.spHttpClient.post(this.url + `(${id})`,SPHttpClient.configurations.v1,{
         headers: {
             "Accept" : "application/json",
             "X-Http-Method" : "DELETE",
-            "IF-Match" : '*'
+            "IF-Match" : etag
         }
     }).then(resp=> {
         return resp.ok;

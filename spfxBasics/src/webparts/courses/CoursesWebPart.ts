@@ -7,14 +7,15 @@ import {
   PropertyPaneDropdownOptionType
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+import { escape } from '@microsoft/sp-lodash-subset';
 
 import styles from './CoursesWebPart.module.scss';
 import * as strings from 'CoursesWebPartStrings';
-import * as $ from 'jquery';
+
+import * as $ from "jquery";
 
 import { ICourse } from "../../common/ICourse";
-​
-import { CourseService } from  "../../services/CourseService";
+import { CourseProvider } from  "../../services/CourseProvider";
 
 export interface ICoursesWebPartProps {
   count: number;
@@ -22,14 +23,15 @@ export interface ICoursesWebPartProps {
 }
 
 export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPartProps> {
-  private provider : CourseService;
+  private provider : CourseProvider;
   private catValues : IPropertyPaneDropdownOption[] = [];
-  private currentID: number = 0;
-​  
+  private currentID : number = 0;
+  private currentETag : string = '';
+
   protected onInit() : Promise<void> {
     //Create Course Service
-    this.provider = new CourseService(`${this.context.pageContext.web.absoluteUrl}/_api/Lists/GetByTitle('Courses')/Items`, this.context );
-  ​
+    this.provider = new CourseProvider('Courses',this.context );
+
     // One call for Category choic values for the
     // Prop pane dropdown
     this.provider.getCategories()
@@ -38,215 +40,201 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
             return {
               key: item,
               text: item
-            } as IPropertyPaneDropdownOption;
+            } as IPropertyPaneDropdownOption
           }));
-​           
-          $("#category",this.domElement).html(this.getCatSelectOptions(this.catValues));
-          console.log("Prop Pane Options : " + JSON.stringify(this.catValues));
-      });
-​
-    /* this.provider.addCourse({
-      CourseID: 7001,
-      Category: "Web Development",
-      Title: "ASP.NET MVC",
-      Description: "ASP.NET MVC Programming",
-      Duration: 20,
-      Price:99,
-      Technology: "ASP.NET"
-    }).then(item => {
-      console.log("Added item : "+ JSON.stringify(item));
-    });
 
-    this.provider.updateCourse(1,{
-      CourseID: 9001,
-      Category: "Web Development",
-      Title: "Java",
-      Description: "Java Programming",
-      Duration: 60,
-      Price:199,
-      Technology: "Java"
-    }).then(status => {
-      console.log("Item updated : " + status);
-    });
-​
-    this.provider.deleteCourse(8).then(status=> console.log("Item deleted : " + status)); */
-​
+          $("#category",this.domElement).html(this.getCatSelectOptions(this.catValues));
+          $("#ecategory",this.domElement).html(this.getCatSelectOptions(this.catValues));
+
+          //console.log("Prop Pane Options : " + JSON.stringify(this.catValues));
+      });
+
     return Promise.resolve();
   }
 
   private getCatSelectOptions(items : IPropertyPaneDropdownOption[]) : string {
     let html= "";
-​
+
     items.forEach(i => {
       html += `<option value='${ i.key}'>${ i.text}</option>`;
     });
-​
+
     return html;
   }
 
   public render(): void {
     $(this.domElement).html(`
-        <div class="${ styles.courses }">
-          <div class="${ styles.container }">
-            <div class="${ styles.row }">
-              <div class="${ styles.column }">
-                <span class="${ styles.title }">Courses!</span>
-                <p class="${ styles.subTitle }">Course data from SP List.</p>
-                <div>
-                  <input type="button" id="btnnew" value="New..." />
-                </div>
-                <div id="output">Loading...</div>
-                <div id="addform">
-                  <h2>Add Course</h2>
-                    Course ID: <input type="text" id="courseid" /><br/>
-                    Name: <input type="text" id="coursename" /><br/>
-                    Details: <br/><textarea id="coursedesc" cols="40" rows="6"></textarea><br/>
-                    Category: <select id="category">
-                      ${
-                        this.getCatSelectOptions(this.catValues)
-                      }
-                    </select><br/>
-                    Technology: <input type="text" id="technology" /><br/>
-                    Duration: <input type="text" id="duration" /><br/>
-                    Price: <input type="text" id="price" /><br/><br/>
-                    <input type="button" value="Save" id="btnaddsave" />&nbsp;
-                    <input type="button" value="Cancel" id="btnaddcancel" />
-                </div>
-                <div id="editform">
-                  <h2>Edit Course</h2>
-                  Course ID: <input type="text" id="ecourseid" /><br/>
-                  Name: <input type="text" id="ecoursename" /><br/>
-                  Details: <br/><textarea id="ecoursedesc" cols="40" rows="6"></textarea><br/>
-                  Category: <select id="ecategory">
-                    ${
-                      this.getCatSelectOptions(this.catValues)
-                    }
-                  </select><br/>
-                  Technology: <input type="text" id="etechnology" /><br/>
-                  Duration: <input type="text" id="eduration" /><br/>
-                  Price: <input type="text" id="eprice" /><br/><br/>
-                  <input type="button" value="Save" id="btneditsave" />&nbsp;
-                  <input type="button" value="Cancel" id="btneditcancel" />
+      <div class="${ styles.courses }">
+        <div class="${ styles.container }">
+          <div class="${ styles.row }">
+            <div class="${ styles.column }">
+              <span class="${ styles.title }">Courses!</span>
+              <p class="${ styles.description }">List of Courses</p>
+              <div>
+                <input type="button" id="btnnew" value="New..." />
               </div>
+              <div id="output">Loading...</div>
+              <div id="addform">
+                <h2>Add Course</h2>
+                Course ID: <input type="text" id="courseid" /><br/>
+                Name: <input type="text" id="coursename" /><br/>
+                Details: <br/><textarea id="coursedesc" cols="40" rows="6"></textarea><br/>
+                Category: <select id="category">
+                  ${
+                    this.getCatSelectOptions(this.catValues)
+                  }
+                </select><br/>
+                Technology: <input type="text" id="technology" /><br/>
+                Duration: <input type="text" id="duration" /><br/>
+                Price: <input type="text" id="price" /><br/><br/>
+                <input type="button" value="Save" id="btnaddsave" />&nbsp;
+                <input type="button" value="Cancel" id="btnaddcancel" />
+              </div>
+              <div id="editform">
+                <h2>Edit Course</h2>
+                Course ID: <input type="text" id="ecourseid" /><br/>
+                Name: <input type="text" id="ecoursename" /><br/>
+                Details: <br/><textarea id="ecoursedesc" cols="40" rows="6"></textarea><br/>
+                Category: <select id="ecategory">
+                  ${
+                    this.getCatSelectOptions(this.catValues)
+                  }
+                </select><br/>
+                Technology: <input type="text" id="etechnology" /><br/>
+                Duration: <input type="text" id="eduration" /><br/>
+                Price: <input type="text" id="eprice" /><br/><br/>
+                <input type="button" value="Save" id="btneditsave" />&nbsp;
+                <input type="button" value="Cancel" id="btneditcancel" />
               </div>
             </div>
           </div>
-        </div>`);
+        </div>
+      </div>`);
 
-         // New Button Event Handlers
-          $("#btnnew",this.domElement).on('click',() => {
-            $("#output",this.domElement).hide();
-            $("#addform",this.domElement).show();
-            $("#btnnew",this.domElement).hide();
-          });
-      ​
-          $("#btnaddcancel",this.domElement).on('click',()=> {
-            $("#output",this.domElement).show();
-            $("#addform",this.domElement).hide();
-            $("#btnnew",this.domElement).show();
-          });
-      ​
-          $("#btnaddsave",this.domElement).on('click',()=>{
-            let item : ICourse = {
-              CourseID: $("#courseid",this.domElement).val() as number,
-              Title: $("#coursename",this.domElement).val() as string,
-              Description: $("#coursedesc",this.domElement).val() as string,
-              Category: $("#category",this.domElement).val() as string,
-              Duration: $("#duration",this.domElement).val() as number,
-              Price: parseFloat($("#price",this.domElement).val() as string),
-              Technology: $("#technology",this.domElement).val() as string
-            };
+    // New Button Event Handlers
+    $("#btnnew",this.domElement).on('click',() => {
+      $("#output",this.domElement).hide();
+      $("#addform",this.domElement).show();
+      $("#btnnew",this.domElement).hide();
+    });
 
-            //console.log("New Item : " + JSON.stringify(item));
-    ​       
-            //this is parellel thread asyncronous functon(.then all the time run saparetly so that's why we are calling render here.)
-            this.provider.addCourse(item).then(newItem => {
-              //console.log("Add success!");
-              //console.log(item);
-              //alert("Add Item!");
-              $("#output",this.domElement).show();
-              $("#addform",this.domElement).hide();
-              $("#btnnew",this.domElement).show();
-      ​
-              this.render();
-            }).catch(err => {
-              alert("Error adding Item!");
-              $("#output",this.domElement).show();
-              $("#addform",this.domElement).hide();
-              $("#btnnew",this.domElement).show();
-            });
-      ​
-          });
+    $("#btnaddcancel",this.domElement).on('click',()=> {
+      $("#output",this.domElement).show();
+      $("#addform",this.domElement).hide();
+      $("#btnnew",this.domElement).show();
+    });
 
-          $("#btneditcancel",this.domElement).on('click',()=> {
-            $("#output",this.domElement).show();
-            $("#editform",this.domElement).hide();
-            $("#btnnew",this.domElement).show();
-          });
-      ​
-           $("#btneditsave",this.domElement).on('click',()=>{
-            let item : ICourse = {
-              CourseID: $("#ecourseid",this.domElement).val() as number,
-              Title: $("#ecoursename",this.domElement).val() as string,
-              Description: $("#ecoursedesc",this.domElement).val() as string,
-              Category: $("#ecategory",this.domElement).val() as string,
-              Duration: $("#eduration",this.domElement).val() as number,
-              Price: parseFloat($("#eprice",this.domElement).val() as string),
-              Technology: $("#etechnology",this.domElement).val() as string
-            };
+    $("#btnaddsave",this.domElement).on('click',()=>{
+      let item : ICourse = {
+        CourseID: $("#courseid",this.domElement).val() as number,
+        Title: $("#coursename",this.domElement).val() as string,
+        Description: $("#coursedesc",this.domElement).val() as string,
+        Category: $("#category",this.domElement).val() as string,
+        Duration: $("#duration",this.domElement).val() as number,
+        Price: parseFloat($("#price",this.domElement).val() as string),
+        Technology: $("#technology",this.domElement).val() as string
+      };
 
-            this.provider.updateCourse(this.currentID,item).then(status => {
-              if(status) {
-                alert("Item Updated!");
-              }
-      ​
-              $("#output",this.domElement).show();
-              $("#editform",this.domElement).hide();
-              $("#btnnew",this.domElement).show();
-      ​
-              this.render();
-            }).catch(err => {
-              alert("Error Updating Item!");
-              $("#output",this.domElement).show();
-              $("#editform",this.domElement).hide();
-              $("#btnnew",this.domElement).show();
-            });
-      ​
-          });
-      
+      console.log("New Item : " + JSON.stringify(item));
 
-          //Hiding the form initially
-          $("#addform",this.domElement).hide();
-          $("#editform",this.domElement).hide();
+      this.provider.addItem(item).then(newItem => {
+        console.log("Add success!");
+        alert("Added Item!");
+        $("#output",this.domElement).show();
+        $("#addform",this.domElement).hide();
+        $("#btnnew",this.domElement).show();
 
+        this.render();
+      }).catch(err => {
+        alert("Error adding Item!");
+        $("#output",this.domElement).show();
+        $("#addform",this.domElement).hide();
+        $("#btnnew",this.domElement).show();
+      });
 
-         // Get the Courses
-         this.provider.getData(this.properties.count, this.properties.category=="All" ? undefined: this.properties.category)
-         .then((courses : ICourse[]) => {
-           $("#output",this.domElement).html(this.getHTML(courses));
+    });
+
+    $("#btneditcancel",this.domElement).on('click',()=> {
+      $("#output",this.domElement).show();
+      $("#editform",this.domElement).hide();
+      $("#btnnew",this.domElement).show();
+    });
+
+     $("#btneditsave",this.domElement).on('click',()=>{
+
+      if(!confirm("Do you want to save changed?")) {
+        $("#output",this.domElement).show();
+        $("#editform",this.domElement).hide();
+        $("#btnnew",this.domElement).show();
+        return;
+      }
+
+      let item : ICourse = {
+        CourseID: $("#ecourseid",this.domElement).val() as number,
+        Title: $("#ecoursename",this.domElement).val() as string,
+        Description: $("#ecoursedesc",this.domElement).val() as string,
+        Category: $("#ecategory",this.domElement).val() as string,
+        Duration: $("#eduration",this.domElement).val() as number,
+        Price: parseFloat($("#eprice",this.domElement).val() as string),
+        Technology: $("#etechnology",this.domElement).val() as string
+      };
+
+      this.provider.updateItem(this.currentID,item,this.currentETag).then(status => {
+        if(status) {
+          alert("Item Updated!");
+        } else {
+          alert("Error updating item! (concurrency mismatch)");
+        }
+
+        $("#output",this.domElement).show();
+        $("#editform",this.domElement).hide();
+        $("#btnnew",this.domElement).show();
+
+        this.render();
+      }).catch(err => {
+        alert("Error Updating Item!");
+        $("#output",this.domElement).show();
+        $("#editform",this.domElement).hide();
+        $("#btnnew",this.domElement).show();
+      });
+
+    });
+
+    $("#addform",this.domElement).hide();
+    $("#editform",this.domElement).hide();
+    
+
+    // Get the Courses
+    this.provider.getItemsByCategory(this.properties.count, this.properties.category=="All" ? undefined: this.properties.category)
+      .then((courses : ICourse[]) => {
+        console.log("List Data : " + JSON.stringify(courses));
+
+        $("#output",this.domElement).html(this.getHTML(courses));
 
         // Register the Edit/Del Link handlers
         this.registerDelHandlers();
-​
+
         this.registerEditHandlers();
-
-         });  
-
+      }); 
   }
 
   private registerEditHandlers() {
     $('a[id^="edt"]',this.domElement).on('click',(event: JQuery.ClickEvent<HTMLElement>) =>{
       event.preventDefault();
-​
+
       let itemID : number = parseInt($(event.currentTarget).attr("href"));
-​
+
       this.currentID = itemID;
-​
+
       this.provider.getItemById(itemID).then((course: ICourse) => {
+        this.currentETag = course["odata.etag"];
+
+        console.log("Etage : " + this.currentETag);
+
         $("#output",this.domElement).hide();
         $("#editform",this.domElement).show();
         $("#btnnew",this.domElement).hide();
-​
+
         // Populate the edit form
         $("#ecourseid",this.domElement).val(course.CourseID.toString());
         $("#ecoursename",this.domElement).val(course.Title);
@@ -268,14 +256,16 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
   private registerDelHandlers() {
     $('a[id^="del"]',this.domElement).on('click',(event: JQuery.ClickEvent<HTMLElement>) =>{
       event.preventDefault();
-​
+
       let itemID : number = parseInt($(event.currentTarget).attr("href"));
-​
+
       if(confirm("Delete this Course?")) {
-        this.provider.deleteCourse(itemID).then(success => {
+        this.provider.deleteItem(itemID,this.currentETag).then(success => {
           if(success){
             alert("Course Deleted!");
             this.render();
+          } else {
+            alert("Could not delete (Item missing/modified)");
           }
         }).catch(err=> {
           alert("Error deleting course! : " + err);
@@ -283,7 +273,7 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
       }
     });
   }
-​
+
   private getHTML(courses: ICourse[]) : string {
     let html =`<table>
                 <tr>
@@ -297,7 +287,7 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
                   <th>Hours</th>
                   <th>&nbsp;</th>
                 </tr>`;
-​
+
     for(let c of courses) {
       html += `
         <tr class="${ styles.courserow }">
@@ -317,7 +307,7 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
         </tr>
       `;
     }
-​
+
     return html + "</table>";
   }
 
@@ -325,51 +315,51 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
   return Version.parse('1.0');
   }
 
-  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-    return {
-      pages: [
-        {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
-          groups: [
-            {
-              groupName: strings.BasicGroupName,
-              groupFields: [
-                PropertyPaneTextField('count', {
-                  label: "Count",
-                  onGetErrorMessage: (value: string) =>{
-                    let c : number = parseInt(value);
-  ​
-                    if(isNaN(c)) {
-                      return "Invalid number";
-                    }
-  ​
-                    if(c <=0) {
-                      return "Count must be > 0";
-                    }
-  ​
-                    return "";
-                  },
-                  deferredValidationTime: 300
-                }),
-                PropertyPaneDropdown('category',{
-                  label: 'Category',
-                  options: [{
-                    key:  "All",
-                    text: "Show All"
-                  },
-                  {
-                    key: "div1",
-                    text: "-",
-                    type: PropertyPaneDropdownOptionType.Divider
-                  },...this.catValues]
-                })
-              ]
-            }
-          ]
-        }
-      ]
-    };
-  }
+  protected getPropertyPaneConfiguration = (): IPropertyPaneConfiguration => {
+  return {
+    pages: [
+      {
+        header: {
+          description: strings.PropertyPaneDescription
+        },
+        groups: [
+          {
+            groupName: strings.BasicGroupName,
+            groupFields: [
+              PropertyPaneTextField('count', {
+                label: "Count",
+                onGetErrorMessage: (value: string) =>{
+                  let c : number = parseInt(value);
+
+                  if(isNaN(c)) {
+                    return "Invalid number";
+                  }
+
+                  if(c <=0) {
+                    return "Count must be > 0";
+                  }
+
+                  return "";
+                },
+                deferredValidationTime: 300
+              }),
+              PropertyPaneDropdown('category',{
+                label: 'Category',
+                options: [{
+                  key:  "All",
+                  text: "Show All"
+                },
+                {
+                  key: "div1",
+                  text: "-",
+                  type: PropertyPaneDropdownOptionType.Divider
+                },...this.catValues]
+              })
+            ]
+          }
+        ]
+      }
+    ]
+  };
+}
 }

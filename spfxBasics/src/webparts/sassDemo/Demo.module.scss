@@ -1,0 +1,85 @@
+// we can create global variable and use in class to avoid repeatation
+// we can create nesteing if word is repeating
+// to create mixin @mixin is require to use @include require
+// we can create parameter and assign
+// We can extend class as well if we do not want to create mixin. extend does not have concept of parameter.
+
+/* Variables */
+$color-lightblue: lightgreen;
+$std-font-family: Helvetica, Sans-Serif, Courier;
+$std-font-size: 12px;
+
+$border-width: 1px;
+$border-style: solid;
+$border-color:gray;
+
+$margin-top: 0px;
+$margin-left: 5px;
+$margin-bott: 10px;
+$margin-right: 5px;
+
+/* Mixins */
+@mixin font-info($color, $size: 10px) {
+    font-family: $std-font-family;
+    font-size: $size;
+    color: $color;
+}
+
+@mixin colors-font {
+    background-color: $color-lightblue;
+    @include font-info(blue);
+    padding: $row-padding;
+}
+
+.defaultbutton {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: $color-lightblue;
+    color: black;
+}
+
+.primarybutton {
+  @extend .defaultbutton;  
+}
+
+.tablerow {
+    $row-padding: 10px !global;
+
+    @include colors-font;
+    border: $border-width $border-style $border-color;
+    margin: $margin-top $margin-left $margin-bott $margin-right;
+}
+
+.tablecell {
+    @include colors-font;
+}
+
+.headingmain {
+    @include font-info(grey);
+}
+
+.box {
+    background-color: $color-lightblue;
+    font: {
+        family: $std-font-family;
+        size: $std-font-size;
+    }
+}
+
+
+nav {
+    ul {
+        margin: 10px;
+        padding: 5px;
+        list-style: none;
+    }
+
+    li {
+        display: inline-block;
+    }
+
+    a {
+        display: block;
+        text-decoration: node;
+    }
+}

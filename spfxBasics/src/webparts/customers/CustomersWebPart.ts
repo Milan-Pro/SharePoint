@@ -72,15 +72,29 @@ export default class CustomersWebPart extends BaseClientSideWebPart <ICustomersW
     console.log("** Render Fired!");
 ​
     this.domElement.innerHTML = `
-      <div class="${ styles.customers }">
+    <div class="${ styles.customers }">
         <div class="${ styles.container }">
-          <div class="${ styles.row }">
-            <div class="${ styles.column }">
-              <span class="${ styles.title }">CUSTOMERS!</span>
-              <p class="${ styles.subTitle }">List of Customers</p>
-              <div id="output">
-                Loading...
+          <span class="${ styles.title }">CUSTOMERS!</span>
+          <p class="${ styles.subTitle }">List of Customers</p>
+          <div class="${ styles.grid }>
+            <div class="${ styles.row}">
+              <div class="${ styles.quarter }">
+                Quarter!!
               </div>
+              <div class="${ styles.threeforuth }">
+                Three Fourth
+              </div>
+            </div>
+            <div class="${ styles.row}">
+              <div class="${ styles.threeforuth }">
+                3/4!!
+              </div>
+              <div class="${ styles.quarter }">
+                1/4
+              </div>
+            </div>
+            <div class="${ styles.row }" id="output">
+              Loading...
             </div>
           </div>
         </div>
