@@ -8,30 +8,30 @@ import {
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { escape } from '@microsoft/sp-lodash-subset';
-
+​
 import styles from './CoursesWebPart.module.scss';
 import * as strings from 'CoursesWebPartStrings';
-
+​
 import * as $ from "jquery";
-
+​
 import { ICourse } from "../../common/ICourse";
 import { CourseProvider } from  "../../services/CourseProvider";
-
+​
 export interface ICoursesWebPartProps {
   count: number;
   category: string;
 }
-
+​
 export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPartProps> {
   private provider : CourseProvider;
   private catValues : IPropertyPaneDropdownOption[] = [];
   private currentID : number = 0;
   private currentETag : string = '';
-
+​
   protected onInit() : Promise<void> {
     //Create Course Service
     this.provider = new CourseProvider('Courses',this.context );
-
+​
     // One call for Category choic values for the
     // Prop pane dropdown
     this.provider.getCategories()
@@ -40,28 +40,28 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
             return {
               key: item,
               text: item
-            } as IPropertyPaneDropdownOption
+            } as IPropertyPaneDropdownOption;
           }));
-
+​
           $("#category",this.domElement).html(this.getCatSelectOptions(this.catValues));
           $("#ecategory",this.domElement).html(this.getCatSelectOptions(this.catValues));
-
+​
           //console.log("Prop Pane Options : " + JSON.stringify(this.catValues));
       });
-
+​
     return Promise.resolve();
   }
-
+​
   private getCatSelectOptions(items : IPropertyPaneDropdownOption[]) : string {
     let html= "";
-
+​
     items.forEach(i => {
       html += `<option value='${ i.key}'>${ i.text}</option>`;
     });
-
+​
     return html;
   }
-
+​
   public render(): void {
     $(this.domElement).html(`
       <div class="${ styles.courses }">
@@ -110,20 +110,20 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
           </div>
         </div>
       </div>`);
-
+​
     // New Button Event Handlers
     $("#btnnew",this.domElement).on('click',() => {
       $("#output",this.domElement).hide();
       $("#addform",this.domElement).show();
       $("#btnnew",this.domElement).hide();
     });
-
+​
     $("#btnaddcancel",this.domElement).on('click',()=> {
       $("#output",this.domElement).show();
       $("#addform",this.domElement).hide();
       $("#btnnew",this.domElement).show();
     });
-
+​
     $("#btnaddsave",this.domElement).on('click',()=>{
       let item : ICourse = {
         CourseID: $("#courseid",this.domElement).val() as number,
@@ -134,16 +134,16 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
         Price: parseFloat($("#price",this.domElement).val() as string),
         Technology: $("#technology",this.domElement).val() as string
       };
-
+​
       console.log("New Item : " + JSON.stringify(item));
-
+​
       this.provider.addItem(item).then(newItem => {
         console.log("Add success!");
         alert("Added Item!");
         $("#output",this.domElement).show();
         $("#addform",this.domElement).hide();
         $("#btnnew",this.domElement).show();
-
+​
         this.render();
       }).catch(err => {
         alert("Error adding Item!");
@@ -151,24 +151,24 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
         $("#addform",this.domElement).hide();
         $("#btnnew",this.domElement).show();
       });
-
+​
     });
-
+​
     $("#btneditcancel",this.domElement).on('click',()=> {
       $("#output",this.domElement).show();
       $("#editform",this.domElement).hide();
       $("#btnnew",this.domElement).show();
     });
-
+​
      $("#btneditsave",this.domElement).on('click',()=>{
-
+​
       if(!confirm("Do you want to save changed?")) {
         $("#output",this.domElement).show();
         $("#editform",this.domElement).hide();
         $("#btnnew",this.domElement).show();
         return;
       }
-
+​
       let item : ICourse = {
         CourseID: $("#ecourseid",this.domElement).val() as number,
         Title: $("#ecoursename",this.domElement).val() as string,
@@ -178,18 +178,18 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
         Price: parseFloat($("#eprice",this.domElement).val() as string),
         Technology: $("#etechnology",this.domElement).val() as string
       };
-
+​
       this.provider.updateItem(this.currentID,item,this.currentETag).then(status => {
         if(status) {
           alert("Item Updated!");
         } else {
           alert("Error updating item! (concurrency mismatch)");
         }
-
+​
         $("#output",this.domElement).show();
         $("#editform",this.domElement).hide();
         $("#btnnew",this.domElement).show();
-
+​
         this.render();
       }).catch(err => {
         alert("Error Updating Item!");
@@ -197,44 +197,44 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
         $("#editform",this.domElement).hide();
         $("#btnnew",this.domElement).show();
       });
-
+​
     });
-
+​
     $("#addform",this.domElement).hide();
     $("#editform",this.domElement).hide();
     
-
+​
     // Get the Courses
     this.provider.getItemsByCategory(this.properties.count, this.properties.category=="All" ? undefined: this.properties.category)
       .then((courses : ICourse[]) => {
         console.log("List Data : " + JSON.stringify(courses));
-
+​
         $("#output",this.domElement).html(this.getHTML(courses));
-
+​
         // Register the Edit/Del Link handlers
         this.registerDelHandlers();
-
+​
         this.registerEditHandlers();
       }); 
   }
-
+​
   private registerEditHandlers() {
     $('a[id^="edt"]',this.domElement).on('click',(event: JQuery.ClickEvent<HTMLElement>) =>{
       event.preventDefault();
-
+​
       let itemID : number = parseInt($(event.currentTarget).attr("href"));
-
+​
       this.currentID = itemID;
-
+​
       this.provider.getItemById(itemID).then((course: ICourse) => {
         this.currentETag = course["odata.etag"];
-
+​
         console.log("Etage : " + this.currentETag);
-
+​
         $("#output",this.domElement).hide();
         $("#editform",this.domElement).show();
         $("#btnnew",this.domElement).hide();
-
+​
         // Populate the edit form
         $("#ecourseid",this.domElement).val(course.CourseID.toString());
         $("#ecoursename",this.domElement).val(course.Title);
@@ -252,15 +252,18 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
       });
     });
   }
-
+​
   private registerDelHandlers() {
     $('a[id^="del"]',this.domElement).on('click',(event: JQuery.ClickEvent<HTMLElement>) =>{
       event.preventDefault();
-
-      let itemID : number = parseInt($(event.currentTarget).attr("href"));
-
+​
+      let params : string[] = $(event.currentTarget).attr("href").split(";");
+​
+      let itemID : number = parseInt(params[0]);
+      let eTag : string = params[1];
+​
       if(confirm("Delete this Course?")) {
-        this.provider.deleteItem(itemID,this.currentETag).then(success => {
+        this.provider.deleteItem(itemID,eTag).then(success => {
           if(success){
             alert("Course Deleted!");
             this.render();
@@ -273,7 +276,7 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
       }
     });
   }
-
+​
   private getHTML(courses: ICourse[]) : string {
     let html =`<table>
                 <tr>
@@ -287,8 +290,10 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
                   <th>Hours</th>
                   <th>&nbsp;</th>
                 </tr>`;
-
+​
     for(let c of courses) {
+      console.log("Item - " + JSON.stringify(c));
+​
       html += `
         <tr class="${ styles.courserow }">
           <td>
@@ -302,19 +307,19 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
           <td>${ c.Price } </td>
           <td>${ c.Duration } </td>
           <td>
-            <a href="${ c["ID"] }" id="del">Del</a>
+            <a href="${ c["ID"] };${ c["odata.etag"] }" id="del">Del</a>
           </td>
         </tr>
       `;
     }
-
+​
     return html + "</table>";
   }
-
+​
   protected get dataVersion(): Version {
   return Version.parse('1.0');
   }
-
+​
   protected getPropertyPaneConfiguration = (): IPropertyPaneConfiguration => {
   return {
     pages: [
@@ -330,15 +335,15 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
                 label: "Count",
                 onGetErrorMessage: (value: string) =>{
                   let c : number = parseInt(value);
-
+​
                   if(isNaN(c)) {
                     return "Invalid number";
                   }
-
+​
                   if(c <=0) {
                     return "Count must be > 0";
                   }
-
+​
                   return "";
                 },
                 deferredValidationTime: 300

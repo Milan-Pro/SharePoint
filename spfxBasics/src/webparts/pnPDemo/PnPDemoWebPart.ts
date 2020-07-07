@@ -95,7 +95,16 @@ export default class PnPDemoWebPart extends BaseClientSideWebPart <IPnPDemoWebPa
         .catch(err => {
           console.log("Delete failed - " + err);
         }); */
+​      
+      // Add Items
+      console.log("Starting Batch Ops...");
 ​
+      this.testBatchOps();
+​
+      this.provider.getCategories().then(output => {
+        console.log(JSON.stringify(output));
+      });
+
       this.provider.getItems()
         .then((courses: ICourse[]) =>{
           let html = "";
@@ -118,6 +127,44 @@ export default class PnPDemoWebPart extends BaseClientSideWebPart <IPnPDemoWebPa
         });
 
   }
+
+  private testBatchOps() {
+    let batch = sp.createBatch();
+​
+    sp.web.lists.getByTitle('Courses').items.getById(1).inBatch(batch).delete()
+    .then(_=>{
+      console.log("Batch: Delete Success!");
+    });
+​
+    sp.web.lists.getByTitle('Courses').items.getById(6).inBatch(batch).update({
+      CourseID: 8002,
+      Title: 'Entity Framework',
+      Description: 'Entity Framework with SQL Server',
+      Category: 'Web Development',
+      Duration: 40,
+      Price: 99.25,
+      Technology: 'Databases'
+    } as ICourse).then((result) =>{
+      console.log("Batch: Update success!");
+    });
+​
+    sp.web.lists.getByTitle('Courses').items.inBatch(batch).add({
+      CourseID: 8005,
+      Title: 'Infragistics for Angular',
+      Description: 'Infragistics for Angular',
+      Category: 'Web Development',
+      Duration: 40,
+      Price: 199.00,
+    }).then((result) => {
+      console.log("Batch: Add Success!");
+    });
+​
+    batch.execute().then(_ => {
+      console.log("Batch Operations completed!");
+    });
+​
+  }
+
 
   protected get dataVersion(): Version {
   return Version.parse('1.0');

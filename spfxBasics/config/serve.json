@@ -6,5 +6,31 @@
   "api": {
     "port": 5432,
     "entryPath": "node_modules/@microsoft/sp-webpart-workbench/lib/api/"
+  },
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://amvipearl.sharepoint.com/sites/AmviPearlTeam/SitePages/Courses.aspx",
+      "customActions": {
+        "70936660-399c-4303-b59e-eab7c731a5c8": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "title": "Test Message",
+            "url": "https:www.google.coom/"
+          }
+        }
+      }
+    },
+    "coursePage": {
+      "pageUrl": "https://amvipearl.sharepoint.com/sites/AmviPearlTeam/SitePages/Courses.aspx",
+      "customActions": {
+        "70936660-399c-4303-b59e-eab7c731a5c8": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "title": "Test Message",
+            "url": "https:www.google.coom/"
+          }
+        }
+      }
+    }
   }
 }
