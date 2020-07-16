@@ -9,10 +9,19 @@
           "manifest": "./src/webparts/rectDemo/RectDemoWebPart.manifest.json"
         }
       ]
+    },
+    "qutoes-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/qutoes/QutoesWebPart.js",
+          "manifest": "./src/webparts/qutoes/QutoesWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "RectDemoWebPartStrings": "lib/webparts/rectDemo/loc/{locale}.js"
+    "RectDemoWebPartStrings": "lib/webparts/rectDemo/loc/{locale}.js",
+    "QutoesWebPartStrings": "lib/webparts/qutoes/loc/{locale}.js"
   }
 }
