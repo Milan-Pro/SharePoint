@@ -4,8 +4,9 @@ import { ICourse } from "../common/ICourse";
 import { sp, IItemAddResult, IItemUpdateResult } from "@pnp/sp/presets/all";
 
 export class CourseProvider {
-
+    
     constructor(private listName : string, private context: WebPartContext) {
+       //This is require to initialize context
       sp.setup({
         spfxContext: this.context
       });

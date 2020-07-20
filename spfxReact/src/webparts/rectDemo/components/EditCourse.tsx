@@ -4,14 +4,15 @@ import styles from './ReactDemo.module.scss';
 import { ICourse } from "../../../common/ICourse";
 import { CourseProvider } from "../../../services/CourseProvider";
 ​
-export interface INewCourseProps {
+export interface IEditCourseProps {
     provider: CourseProvider,
     onCancel() : void;
     onSaved() :void;
     categories: string[];
+    id: number
 }
 ​
-export function NewCourse(props: INewCourseProps) : JSX.Element {
+export function EditCourse(props: IEditCourseProps) : JSX.Element {
     let refs =  {
         CourseID: React.createRef<HTMLInputElement>(),
         Category: React.createRef<HTMLSelectElement>(),
@@ -21,6 +22,26 @@ export function NewCourse(props: INewCourseProps) : JSX.Element {
         Duration: React.createRef<HTMLInputElement>(),
         Price: React.createRef<HTMLInputElement>()
     };
+​
+    let eTag: string  = "";
+​
+    // Fetch and populate form
+    props.provider.getItemById(props.id).then((c: ICourse) => {
+        refs.CourseID.current.value=c.CourseID.toString();
+        refs.Title.current.value=c.Title;
+        refs.Description.current.value=c.Description;
+        refs.Technology.current.value=c.Technology;
+        refs.Category.current.value=c.Category;
+        refs.Duration.current.value=c.Duration.toString();
+        refs.Price.current.value=c.Price.toString();
+        eTag=c["odata.etag"];
+​
+    }).catch(err=> {
+        alert("Unable to populat edit form!");
+        props.onCancel();
+        return;
+    });
+​
 ​
     return <div>
             <h2>Add Form</h2>
@@ -40,8 +61,8 @@ export function NewCourse(props: INewCourseProps) : JSX.Element {
             <input type="button" value=" Save " onClick={ () => {
                 // Validations come here
 ​
-                if(confirm("Add this Course?")) {
-                    props.provider.addItem({
+                if(confirm("Update this Course?")) {
+                    props.provider.updateItem(props.id, {
                         CourseID: parseInt(refs.CourseID.current.value),
                         Title:refs.Title.current.value,
                         Description: refs.Description.current.value,
@@ -49,8 +70,8 @@ export function NewCourse(props: INewCourseProps) : JSX.Element {
                         Technology: refs.Technology.current.value,
                         Duration: parseInt(refs.Duration.current.value),
                         Price:parseFloat(refs.Price.current.value)
-                    }).then(()=> {
-                        alert("Item added!");
+                    } as ICourse, eTag).then(()=> {
+                        alert("Item Updated!");
                         props.onSaved();
                     });
                 }
@@ -58,8 +79,3 @@ export function NewCourse(props: INewCourseProps) : JSX.Element {
             <input type="button" value=" Cancel " onClick={ ()=> props.onCancel() } />
        </div>;
 }
-
-
-
-
-
