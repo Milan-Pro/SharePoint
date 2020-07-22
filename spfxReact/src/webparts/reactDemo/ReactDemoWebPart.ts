@@ -7,9 +7,10 @@ import {
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
-import * as strings from 'RectDemoWebPartStrings';
-import Courses, { ICoursesProps } from './components/Courses';
+import * as strings from 'ReactDemoWebPartStrings';
 
+import { Products } from './components/Products'
+import { IProduct } from './components/IProduct';
 export interface IReactDemoWebPartProps {
   description: string;
 }
@@ -17,8 +18,8 @@ export interface IReactDemoWebPartProps {
 export default class ReactDemoWebPart extends BaseClientSideWebPart <IReactDemoWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<ICoursesProps> = React.createElement(
-      Courses,
+    const element: React.ReactElement<IProduct> = React.createElement(
+      Products,
       {
         context: this.context
       }

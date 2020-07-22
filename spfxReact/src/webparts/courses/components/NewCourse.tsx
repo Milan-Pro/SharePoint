@@ -1,16 +1,16 @@
 import * as React from "react";
-import styles from './ReactDemo.module.scss';
-​
+import styles from './Courses.module.scss';
+
 import { ICourse } from "../../../common/ICourse";
 import { CourseProvider } from "../../../services/CourseProvider";
-​
+
 export interface INewCourseProps {
     provider: CourseProvider,
     onCancel() : void;
     onSaved() :void;
     categories: string[];
 }
-​
+
 export function NewCourse(props: INewCourseProps) : JSX.Element {
     let refs =  {
         CourseID: React.createRef<HTMLInputElement>(),
@@ -21,7 +21,7 @@ export function NewCourse(props: INewCourseProps) : JSX.Element {
         Duration: React.createRef<HTMLInputElement>(),
         Price: React.createRef<HTMLInputElement>()
     };
-​
+
     return <div>
             <h2>Add Form</h2>
             Course ID : <input type="number" name="CourseID" ref={ refs.CourseID }/><br/>
@@ -36,10 +36,10 @@ export function NewCourse(props: INewCourseProps) : JSX.Element {
             Technology : <input type="text" name="Technology" ref={ refs.Technology } /><br/>          
             Duration : <input type="number" name="Duration" ref={ refs.Duration }/><br/>
             Price : <input type="number" name="Price" ref={ refs.Price } /><br/>
-​
+
             <input type="button" value=" Save " onClick={ () => {
                 // Validations come here
-​
+
                 if(confirm("Add this Course?")) {
                     props.provider.addItem({
                         CourseID: parseInt(refs.CourseID.current.value),
@@ -49,7 +49,7 @@ export function NewCourse(props: INewCourseProps) : JSX.Element {
                         Technology: refs.Technology.current.value,
                         Duration: parseInt(refs.Duration.current.value),
                         Price:parseFloat(refs.Price.current.value)
-                    }).then(()=> {
+                    } as ICourse).then(()=> {
                         alert("Item added!");
                         props.onSaved();
                     });
@@ -58,8 +58,3 @@ export function NewCourse(props: INewCourseProps) : JSX.Element {
             <input type="button" value=" Cancel " onClick={ ()=> props.onCancel() } />
        </div>;
 }
-
-
-
-
-

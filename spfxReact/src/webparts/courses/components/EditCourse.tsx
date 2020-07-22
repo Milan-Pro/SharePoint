@@ -1,17 +1,17 @@
 import * as React from "react";
-import styles from './ReactDemo.module.scss';
-​
+import styles from './Courses.module.scss';
+
 import { ICourse } from "../../../common/ICourse";
 import { CourseProvider } from "../../../services/CourseProvider";
-​
+
 export interface IEditCourseProps {
     provider: CourseProvider,
-    onCancel() : void;
-    onSaved() :void;
+    onCancel() : void,
+    onSaved() :void,
     categories: string[];
     id: number
 }
-​
+
 export function EditCourse(props: IEditCourseProps) : JSX.Element {
     let refs =  {
         CourseID: React.createRef<HTMLInputElement>(),
@@ -22,9 +22,9 @@ export function EditCourse(props: IEditCourseProps) : JSX.Element {
         Duration: React.createRef<HTMLInputElement>(),
         Price: React.createRef<HTMLInputElement>()
     };
-​
+
     let eTag: string  = "";
-​
+
     // Fetch and populate form
     props.provider.getItemById(props.id).then((c: ICourse) => {
         refs.CourseID.current.value=c.CourseID.toString();
@@ -35,14 +35,14 @@ export function EditCourse(props: IEditCourseProps) : JSX.Element {
         refs.Duration.current.value=c.Duration.toString();
         refs.Price.current.value=c.Price.toString();
         eTag=c["odata.etag"];
-​
+
     }).catch(err=> {
         alert("Unable to populat edit form!");
         props.onCancel();
         return;
     });
-​
-​
+
+
     return <div>
             <h2>Add Form</h2>
             Course ID : <input type="number" name="CourseID" ref={ refs.CourseID }/><br/>
@@ -57,10 +57,10 @@ export function EditCourse(props: IEditCourseProps) : JSX.Element {
             Technology : <input type="text" name="Technology" ref={ refs.Technology } /><br/>          
             Duration : <input type="number" name="Duration" ref={ refs.Duration }/><br/>
             Price : <input type="number" name="Price" ref={ refs.Price } /><br/>
-​
+
             <input type="button" value=" Save " onClick={ () => {
                 // Validations come here
-​
+
                 if(confirm("Update this Course?")) {
                     props.provider.updateItem(props.id, {
                         CourseID: parseInt(refs.CourseID.current.value),

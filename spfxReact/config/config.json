@@ -17,11 +17,20 @@
           "manifest": "./src/webparts/qutoes/QutoesWebPart.manifest.json"
         }
       ]
+    },
+    "courses-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/courses/CoursesWebPart.js",
+          "manifest": "./src/webparts/courses/CoursesWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "RectDemoWebPartStrings": "lib/webparts/rectDemo/loc/{locale}.js",
-    "QutoesWebPartStrings": "lib/webparts/qutoes/loc/{locale}.js"
+    "QutoesWebPartStrings": "lib/webparts/qutoes/loc/{locale}.js",
+    "CoursesWebPartStrings": "lib/webparts/courses/loc/{locale}.js"
   }
 }

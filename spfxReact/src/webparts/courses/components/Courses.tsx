@@ -1,35 +1,33 @@
 import * as React from 'react';
-import styles from './ReactDemo.module.scss';
-​
+import styles from '../../reactDemo/components/ReactDemo.module.scss';
+
 import { CourseProvider } from "../../../services/CourseProvider";
 import { ICourse } from "../../../common/ICourse";
-​
+
 import { NewCourse } from "./NewCourse";
 import { EditCourse } from "./EditCourse";
-​
-export interface ICoursesProps {
-  context: any;
-}
-​
+
+import { ICoursesProps } from "./ICoursesProps";
+
 interface ICoursesState {
   data: ICourse[];
   mode: FormMode;
   categories:string[];
   currentItemID: number;
 }
-​
+
 enum FormMode {
   ViewAll,
   New,
   Edit
 }
-​
+
 export default class Courses extends React.Component<ICoursesProps, ICoursesState> {
   private provider : CourseProvider;
-​
+
   constructor(props: ICoursesProps) {
     super(props);
-​
+
     // Create the State
     this.state = {
       data: [],
@@ -37,11 +35,11 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
       categories: [],
       currentItemID: 0
     };
-​
-    this.provider = new CourseProvider("Courses", props.context);
-​
+
+    this.provider = new CourseProvider(this.props.listName, props.context);
+
   }
-​
+
   public componentDidMount() {
     // Get categories
     this.provider.getCategories()
@@ -50,10 +48,10 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
           categories: cats
         });
       });
-​
+
       this.refreshData();
   }
-​
+
   private refreshData() {
         // Getting Items
         this.provider.getItems()
@@ -67,14 +65,14 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
           alert("Error fetching data: " + err);
         });
   }
-​
+
   public render(): JSX.Element {
     return (
       <div className={ styles.reactDemo }>
         <div className={ styles.container }>
           <div className={ styles.row }>
             <div className={ styles.column }>
-              <span className={ styles.title }>Courses</span>
+              <span className={ styles.title }>{ this.props.title }</span>
               <p className={ styles.subTitle }>List of Courses</p>
               {
                 this.state.mode==FormMode.ViewAll && <input type="button" value="Add..." onClick={ () => {
@@ -82,11 +80,11 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
                     mode: FormMode.New as FormMode
                   });
                }} />
-​
+
               }
-​
+
               { this.state.mode==FormMode.ViewAll && this.getCoursesTable() }
-​
+
               {
                 this.state.mode==FormMode.New && <NewCourse provider={ this.provider } categories={ this.state.categories } 
                 onCancel={ () =>{
@@ -94,18 +92,18 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
                     mode: FormMode.ViewAll as FormMode
                     });
                 }}
-​
+
                 onSaved={ ()=> {
                   this.setState({
                     mode:FormMode.ViewAll as FormMode
                   });
-​
+
                   this.refreshData();
                 }}
                 
                 />
               }
-​
+
               {
                 this.state.mode==FormMode.Edit && <EditCourse provider={ this.provider } categories={ this.state.categories }
                 id={ this.state.currentItemID }
@@ -115,25 +113,25 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
                     mode: FormMode.ViewAll as FormMode
                     });
                 }}
-​
+
                 onSaved={ ()=> {
                   this.setState({
                     mode:FormMode.ViewAll as FormMode
                   });
-​
+
                   this.refreshData();
                 }}
                 
                 />
               }
-​
+
             </div>
           </div>
         </div>
       </div>
     );
   }
-​
+
   private getCoursesTable() {
     return <table>
             <tr>
@@ -149,7 +147,7 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
             }
           </table>;
   }
-​
+
   private getCourseRow(c: ICourse) {
     return <tr>
             <td>{ c.CourseID }</td>
@@ -168,23 +166,24 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
               } />
             </td>
             <td>
-              <input type="button" value="Delete" onClick={
+            <input type="button" value="Del" onClick={
                 () => {
-                  if(confirm("Delete this course")){
-                    this.provider.deleteItem(c["ID"],c["Odata.etag"])
-                    .then(()=>{
-                      alert("Item Deleted");
-                      this.setState({
-                        mode:FormMode.ViewAll
+                  if(confirm("Delete this course?")) {
+                    this.provider.deleteItem(c["ID"],c["odata.etag"])
+                      .then(()=> {
+                        alert("Item Deleted!");
+                        this.setState({
+                          mode: FormMode.ViewAll
+                        });
+
+                        this.refreshData();
+                      })
+                      .catch((err)=> {
+                        alert("Could not delete: " + err);
+                        this.setState({
+                          mode: FormMode.ViewAll
+                        });
                       });
-                      this.refreshData();
-                    })
-                    .catch((err)=> {
-                      alert("Could not delete: " + err);
-                      this.setState({
-                        mode: FormMode.ViewAll
-                      });
-                    });
                   }
                 }
               } />
