@@ -8,7 +8,7 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'CoursesWebPartStrings';
-import Courses from './components/Courses';
+import { AllCourses } from './components/AllCourses';
 import { ICoursesProps } from './components/ICoursesProps';
 
 export interface ICoursesWebPartProps {
@@ -20,7 +20,7 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
 
   public render(): void {
     const element: React.ReactElement<ICoursesProps> = React.createElement(
-      Courses,
+      AllCourses,
       {
         context: this.context,
         listName: this.properties.listname,

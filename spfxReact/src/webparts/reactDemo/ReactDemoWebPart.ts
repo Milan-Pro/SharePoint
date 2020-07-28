@@ -9,8 +9,9 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'ReactDemoWebPartStrings';
 
-import { Products } from './components/Products'
-import { IProduct } from './components/IProduct';
+import DropdownDemo from "./components/DropdownDemo";
+
+
 export interface IReactDemoWebPartProps {
   description: string;
 }
@@ -18,8 +19,8 @@ export interface IReactDemoWebPartProps {
 export default class ReactDemoWebPart extends BaseClientSideWebPart <IReactDemoWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IProduct> = React.createElement(
-      Products,
+    const element: React.ReactElement<any> = React.createElement(
+      DropdownDemo,
       {
         context: this.context
       }
