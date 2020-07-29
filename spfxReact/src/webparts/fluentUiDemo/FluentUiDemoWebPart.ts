@@ -7,24 +7,21 @@ import {
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
-import * as strings from 'CoursesWebPartStrings';
-import Courses from './components/Courses';
-import { ICoursesProps } from './components/ICoursesProps';
+import * as strings from 'FluentUiDemoWebPartStrings';
+import FluentUiDemo from './components/FluentUiDemo';
+import { IFluentUiDemoProps } from './components/IFluentUiDemoProps';
 
-export interface ICoursesWebPartProps {
-  listname: string;
-  title: string;
+export interface IFluentUiDemoWebPartProps {
+  description: string;
 }
 
-export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPartProps> {
+export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentUiDemoWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<ICoursesProps> = React.createElement(
-      Courses,
+    const element: React.ReactElement<IFluentUiDemoProps> = React.createElement(
+      FluentUiDemo,
       {
-        context: this.context,
-        listName: this.properties.listname,
-        title: this.properties.title
+        description: this.properties.description
       }
     );
 
@@ -50,11 +47,8 @@ export default class CoursesWebPart extends BaseClientSideWebPart <ICoursesWebPa
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('title', {
-                  label: "Title"
-                }),
-                PropertyPaneTextField('listname', {
-                  label: "List Name"
+                PropertyPaneTextField('description', {
+                  label: strings.DescriptionFieldLabel
                 })
               ]
             }

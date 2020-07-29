@@ -4,14 +4,17 @@ import styles from './Courses.module.scss';
 import { ICourse } from "../../../common/ICourse";
 import { CourseProvider } from "../../../services/CourseProvider";
 
+import { ProviderContext } from "./ProviderContext";
+
 export interface INewCourseProps {
-    provider: CourseProvider,
     onCancel() : void;
     onSaved() :void;
     categories: string[];
 }
 
 export function NewCourse(props: INewCourseProps) : JSX.Element {
+    let provider = React.useContext<CourseProvider>(ProviderContext);
+
     let refs =  {
         CourseID: React.createRef<HTMLInputElement>(),
         Category: React.createRef<HTMLSelectElement>(),
@@ -41,7 +44,7 @@ export function NewCourse(props: INewCourseProps) : JSX.Element {
                 // Validations come here
 
                 if(confirm("Add this Course?")) {
-                    props.provider.addItem({
+                    provider.addItem({
                         CourseID: parseInt(refs.CourseID.current.value),
                         Title:refs.Title.current.value,
                         Description: refs.Description.current.value,

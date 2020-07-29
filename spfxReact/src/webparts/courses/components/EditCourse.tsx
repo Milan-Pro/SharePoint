@@ -4,8 +4,9 @@ import styles from './Courses.module.scss';
 import { ICourse } from "../../../common/ICourse";
 import { CourseProvider } from "../../../services/CourseProvider";
 
+import { ProviderContext } from "./ProviderContext";
+
 export interface IEditCourseProps {
-    provider: CourseProvider,
     onCancel() : void,
     onSaved() :void,
     categories: string[];
@@ -13,6 +14,8 @@ export interface IEditCourseProps {
 }
 
 export function EditCourse(props: IEditCourseProps) : JSX.Element {
+    let provider = React.useContext<CourseProvider>(ProviderContext);
+
     let refs =  {
         CourseID: React.createRef<HTMLInputElement>(),
         Category: React.createRef<HTMLSelectElement>(),
@@ -26,7 +29,7 @@ export function EditCourse(props: IEditCourseProps) : JSX.Element {
     let eTag: string  = "";
 
     // Fetch and populate form
-    props.provider.getItemById(props.id).then((c: ICourse) => {
+    provider.getItemById(props.id).then((c: ICourse) => {
         refs.CourseID.current.value=c.CourseID.toString();
         refs.Title.current.value=c.Title;
         refs.Description.current.value=c.Description;
@@ -62,7 +65,7 @@ export function EditCourse(props: IEditCourseProps) : JSX.Element {
                 // Validations come here
 
                 if(confirm("Update this Course?")) {
-                    props.provider.updateItem(props.id, {
+                   provider.updateItem(props.id, {
                         CourseID: parseInt(refs.CourseID.current.value),
                         Title:refs.Title.current.value,
                         Description: refs.Description.current.value,

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styles from '../../reactDemo/components/ReactDemo.module.scss';
 
+import { ProviderContext } from "./ProviderContext";
+
 import { CourseProvider } from "../../../services/CourseProvider";
 import { ICourse } from "../../../common/ICourse";
 
@@ -68,6 +70,7 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
 
   public render(): JSX.Element {
     return (
+      <ProviderContext.Provider value={ this.provider }>
       <div className={ styles.reactDemo }>
         <div className={ styles.container }>
           <div className={ styles.row }>
@@ -86,7 +89,7 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
               { this.state.mode==FormMode.ViewAll && this.getCoursesTable() }
 
               {
-                this.state.mode==FormMode.New && <NewCourse provider={ this.provider } categories={ this.state.categories } 
+                this.state.mode==FormMode.New && <NewCourse categories={ this.state.categories } 
                 onCancel={ () =>{
                   this.setState({
                     mode: FormMode.ViewAll as FormMode
@@ -105,7 +108,7 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
               }
 
               {
-                this.state.mode==FormMode.Edit && <EditCourse provider={ this.provider } categories={ this.state.categories }
+                this.state.mode==FormMode.Edit && <EditCourse categories={ this.state.categories }
                 id={ this.state.currentItemID }
                  
                 onCancel={ () =>{
@@ -129,6 +132,7 @@ export default class Courses extends React.Component<ICoursesProps, ICoursesStat
           </div>
         </div>
       </div>
+      </ProviderContext.Provider>
     );
   }
 
