@@ -14,6 +14,8 @@ import { IFluentUiDemoProps } from './components/IFluentUiDemoProps';
 import DatePickerDemo from './components/DatePickerDemo';
 import PeoplePickerDemo from './components/PeoplePickerDemo';
 
+import GridDemo from "./components/GridDemo";
+
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
@@ -37,13 +39,23 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentU
       }
     ); */
 
-
-    const element = React.createElement(
+    //People picker's demo 
+    /* const element = React.createElement(
       PeoplePickerDemo,
       {
         context: this.context
       }
     )
+    ReactDom.render(element, this.domElement); */
+
+    //Grid demo
+    const element = React.createElement(
+      GridDemo,
+      {
+        context: this.context
+      }
+    );
+
     ReactDom.render(element, this.domElement);
   }
 
