@@ -40,6 +40,7 @@
     "ReactDemoWebPartStrings": "lib/webparts/reactDemo/loc/{locale}.js",
     "QutoesWebPartStrings": "lib/webparts/qutoes/loc/{locale}.js",
     "CoursesWebPartStrings": "lib/webparts/courses/loc/{locale}.js",
-    "FluentUiDemoWebPartStrings": "lib/webparts/fluentUiDemo/loc/{locale}.js"
+    "FluentUiDemoWebPartStrings": "lib/webparts/fluentUiDemo/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
   }
 }

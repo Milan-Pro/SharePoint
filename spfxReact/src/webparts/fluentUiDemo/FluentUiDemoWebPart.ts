@@ -11,6 +11,9 @@ import * as strings from 'FluentUiDemoWebPartStrings';
 import FluentUiDemo from './components/FluentUiDemo';
 import { IFluentUiDemoProps } from './components/IFluentUiDemoProps';
 
+import DatePickerDemo from './components/DatePickerDemo';
+import PeoplePickerDemo from './components/PeoplePickerDemo';
+
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
@@ -18,13 +21,29 @@ export interface IFluentUiDemoWebPartProps {
 export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentUiDemoWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IFluentUiDemoProps> = React.createElement(
+    /* const element: React.ReactElement<IFluentUiDemoProps> = React.createElement(
       FluentUiDemo,
       {
         description: this.properties.description
       }
     );
+    ReactDom.render(element, this.domElement); */
+    
+    //Date Picker
+    /* const element2 = React.createElement(
+      DatePickerDemo,
+      {
+        context: this.context
+      }
+    ); */
 
+
+    const element = React.createElement(
+      PeoplePickerDemo,
+      {
+        context: this.context
+      }
+    )
     ReactDom.render(element, this.domElement);
   }
 
