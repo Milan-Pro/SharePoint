@@ -41,6 +41,41 @@ const courses : ICourse[] = [
   }
 ];
 
+const columns : IColumn[] = [
+  {
+    key: "CourseID",
+    name: "ID",
+    fieldName: "CourseID",
+    minWidth:50,
+    maxWidth: 75,
+    isResizable: false
+  },
+  {
+    key: "Title",
+    name: "Course Name",
+    fieldName: "Title",
+    minWidth:200,
+    maxWidth: 350,
+    isResizable: true
+  },
+  {
+    key: "Category",
+    name: "Category",
+    fieldName: "Category",
+    minWidth:200,
+    maxWidth: 300,
+    isResizable: true
+  },
+  {
+    key: "Duration",
+    name: "Hours",
+    fieldName: "Duration",
+    minWidth:150,
+    maxWidth: 200,
+    isResizable: true
+  }
+];
+
 export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoState> {
   constructor(props: IGridDemoProps) {
     super(props);
@@ -58,6 +93,7 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
                 items={ this.state.data}
                 isHeaderVisible={ true }
                 layoutMode={ DetailsListLayoutMode.justified }
+                columns={ columns }
               />
         </Fabric>
     );
