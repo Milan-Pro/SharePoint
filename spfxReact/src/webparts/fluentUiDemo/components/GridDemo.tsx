@@ -4,12 +4,17 @@ import styles from './FluentUiDemo.module.scss';
 import { Fabric, Label, TextField, DetailsList, DetailsListLayoutMode,
   IColumn } from "office-ui-fabric-react";
 
+import { sp } from "@pnp/sp/presets/all";
 
-interface ICourse {
+
+export interface ICourse {
   CourseID: number;
-  Title: string;
   Category: string;
+  Title: string;
+  Description?: string;
+  Technology?: string;
   Duration: number;
+  Price: number;
 }
 
 interface IGridDemoProps {
@@ -20,26 +25,6 @@ interface IGridDemoState {
   data: ICourse[]
 }
 
-const courses : ICourse[] = [
-  {
-    CourseID: 1001,
-    Title: 'C Programming',
-    Category: 'Programming',
-    Duration: 40
-  },
-  {
-    CourseID: 1002,
-    Title: 'R Programming',
-    Category: 'Programming',
-    Duration: 40
-  },
-  {
-    CourseID: 1003,
-    Title: 'Python Programming',
-    Category: 'Programming',
-    Duration: 40
-  }
-];
 
 const columns : IColumn[] = [
   {
@@ -73,6 +58,14 @@ const columns : IColumn[] = [
     minWidth:150,
     maxWidth: 200,
     isResizable: true
+  },
+  {
+    key: "Price",
+    name: "Fees",
+    fieldName: "Price",
+    minWidth:150,
+    maxWidth: 200,
+    isResizable: true
   }
 ];
 
@@ -80,17 +73,33 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
   constructor(props: IGridDemoProps) {
     super(props);
 
+    sp.setup({
+      spfxContext:this.props.context
+    });
+
     this.state = {
-      data: courses
+      data: []
     };
 
+  }
+  //getting list data through pnp and displaying in a grid.
+  public componentDidMount() {
+    sp.web.lists.getByTitle("Courses").items.get<ICourse[]>()
+      .then(items => {
+          this.setState({
+            data: items
+          });
+      })
+      .catch(err => { 
+        console.log("Error fetching courses!" + err);
+      });
   }
 
   public render(): React.ReactElement<IGridDemoProps> {
     return (
         <Fabric>
               <DetailsList 
-                items={ this.state.data}
+                items={ this.state.data }
                 isHeaderVisible={ true }
                 layoutMode={ DetailsListLayoutMode.justified }
                 columns={ columns }
