@@ -2,7 +2,7 @@ import * as React from 'react';
 import styles from './FluentUiDemo.module.scss';
 
 import { Fabric, Label, TextField, DetailsList, DetailsListLayoutMode,
-  IColumn } from "office-ui-fabric-react";
+  IColumn, SelectionMode, Selection,  MarqueeSelection } from "office-ui-fabric-react";
 
 import { sp } from "@pnp/sp/presets/all";
 
@@ -22,7 +22,9 @@ interface IGridDemoProps {
 }
 
 interface IGridDemoState {
-  data: ICourse[]
+    original:  ICourse[];
+    data: ICourse[];
+    selectedData: ICourse[];
 }
 
 
@@ -70,6 +72,9 @@ const columns : IColumn[] = [
 ];
 
 export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoState> {
+    //storing selected data in private variable
+  private selections : Selection;
+
   constructor(props: IGridDemoProps) {
     super(props);
 
@@ -77,17 +82,31 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
       spfxContext:this.props.context
     });
 
+    // Onselection change event will get data from private selections variable and set state here. this will allow rerender to show what is selected.
+    this.selections = new Selection({
+      onSelectionChanged: () => {
+        let selCourses : ICourse[] = this.selections.getSelection() as ICourse[];
+
+        this.setState({
+          selectedData: selCourses
+        });
+      }
+    });
+
     this.state = {
-      data: []
+        original: [],
+        data: [],
+        selectedData: []
     };
 
   }
-  //getting list data through pnp and displaying in a grid.
+
   public componentDidMount() {
     sp.web.lists.getByTitle("Courses").items.get<ICourse[]>()
       .then(items => {
           this.setState({
-            data: items
+            data: items,
+            original: items
           });
       })
       .catch(err => { 
@@ -98,12 +117,36 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
   public render(): React.ReactElement<IGridDemoProps> {
     return (
         <Fabric>
+            <TextField label="Search :" onChange={ (e,value: string) => {
+                this.setState({
+                  data: value ? this.state.original
+                    .filter(c => c.Title.toLowerCase().indexOf(value.toLowerCase())>-1 || 
+                                 c.Category.toLowerCase().indexOf(value.toLowerCase())>-1 ) : this.state.original
+                });
+            }} /><br/>
+
+            {/* MarqueeSelection will allow to draw and select multiple.*/}
+            <MarqueeSelection selection={ this.selections }>
               <DetailsList 
                 items={ this.state.data }
                 isHeaderVisible={ true }
                 layoutMode={ DetailsListLayoutMode.justified }
+                selectionMode={ SelectionMode.multiple }
                 columns={ columns }
+                selection={ this.selections }
               />
+            </MarqueeSelection>
+
+            <div>
+            {/*Showing selected data */}
+            <Label>Selected Courses : ({ this.selections.getSelectedCount() })</Label>
+            {
+                this.state.selectedData.map((c: ICourse) => <div>
+                {c.CourseID } <br/>
+                {c.Title }
+                </div>)
+            }
+            </div>
         </Fabric>
     );
   }
