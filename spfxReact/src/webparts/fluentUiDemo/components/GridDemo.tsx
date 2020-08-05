@@ -22,58 +22,91 @@ interface IGridDemoProps {
 }
 
 interface IGridDemoState {
-    original:  ICourse[];
-    data: ICourse[];
-    selectedData: ICourse[];
+  original:  ICourse[];
+  data: ICourse[];
+  selectedData: ICourse[];
+  columns: IColumn[];
 }
 
-
-const columns : IColumn[] = [
-  {
-    key: "CourseID",
-    name: "ID",
-    fieldName: "CourseID",
-    minWidth:50,
-    maxWidth: 75,
-    isResizable: false
-  },
-  {
-    key: "Title",
-    name: "Course Name",
-    fieldName: "Title",
-    minWidth:200,
-    maxWidth: 350,
-    isResizable: true
-  },
-  {
-    key: "Category",
-    name: "Category",
-    fieldName: "Category",
-    minWidth:200,
-    maxWidth: 300,
-    isResizable: true
-  },
-  {
-    key: "Duration",
-    name: "Hours",
-    fieldName: "Duration",
-    minWidth:150,
-    maxWidth: 200,
-    isResizable: true
-  },
-  {
-    key: "Price",
-    name: "Fees",
-    fieldName: "Price",
-    minWidth:150,
-    maxWidth: 200,
-    isResizable: true
-  }
-];
 
 export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoState> {
     //storing selected data in private variable
   private selections : Selection;
+
+  private handleColumnClick = (event, column: IColumn) => {
+    
+    const columns = this.state.columns.slice();
+    const data = this.state.data.slice();
+
+    const newColumns: IColumn[] = columns.slice();
+    const currCol : IColumn = newColumns.filter(c => column.key === c.key)[0];
+
+    newColumns.forEach((c: IColumn) => {
+      if(c===currCol) {
+        currCol.isSortedDescending = !currCol.isSortedDescending;
+        currCol.isSorted = true;
+      } else {
+        c.isSorted = false;
+        c.isSortedDescending = true;
+      }
+    });
+
+    // Actual Sort
+    const sortedItems = this.sortItems(data,currCol.fieldName,currCol.isSortedDescending);
+
+    this.setState({
+      data: sortedItems,
+      columns: newColumns
+    });
+  }
+
+  private columns : IColumn[] = [
+    {
+      key: "CourseID",
+      name: "ID",
+      fieldName: "CourseID",
+      minWidth:50,
+      maxWidth: 75,
+      isResizable: false,
+      onColumnClick: this.handleColumnClick
+    },
+    {
+      key: "Title",
+      name: "Course Name",
+      fieldName: "Title",
+      minWidth:200,
+      maxWidth: 350,
+      isResizable: true,
+      onColumnClick: this.handleColumnClick
+    },
+    {
+      key: "Category",
+      name: "Category",
+      fieldName: "Category",
+      minWidth:200,
+      maxWidth: 300,
+      isResizable: true,
+      onColumnClick: this.handleColumnClick
+    },
+    {
+      key: "Duration",
+      name: "Hours",
+      fieldName: "Duration",
+      minWidth:150,
+      maxWidth: 200,
+      isResizable: true,
+      onColumnClick: this.handleColumnClick
+    },
+    {
+      key: "Price",
+      name: "Fees",
+      fieldName: "Price",
+      minWidth:150,
+      maxWidth: 200,
+      isResizable: true,
+      onColumnClick: this.handleColumnClick
+    }
+  ];
 
   constructor(props: IGridDemoProps) {
     super(props);
@@ -96,7 +129,8 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
     this.state = {
         original: [],
         data: [],
-        selectedData: []
+        selectedData: [],        
+        columns: this.columns
     };
 
   }
@@ -112,6 +146,14 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
       .catch(err => { 
         console.log("Error fetching courses!" + err);
       });
+  }  
+
+  private sortItems<T>(items: T[], fieldName: string,sortDesc: boolean) : T[] {
+
+    const key = fieldName as keyof T;
+
+    return items.slice(0).sort((a: T, b: T) => ((sortDesc ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
+
   }
 
   public render(): React.ReactElement<IGridDemoProps> {
@@ -132,8 +174,9 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
                 isHeaderVisible={ true }
                 layoutMode={ DetailsListLayoutMode.justified }
                 selectionMode={ SelectionMode.multiple }
-                columns={ columns }
+                columns={ this.state.columns }
                 selection={ this.selections }
+                compact={ true }
               />
             </MarqueeSelection>
 
