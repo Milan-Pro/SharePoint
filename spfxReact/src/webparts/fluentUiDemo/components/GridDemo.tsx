@@ -150,7 +150,7 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
 
   private sortItems<T>(items: T[], fieldName: string,sortDesc: boolean) : T[] {
 
-    const key = fieldName as keyof T;
+    const key = fieldName as keyof T;//passing variable as key
 
     return items.slice(0).sort((a: T, b: T) => ((sortDesc ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
 
