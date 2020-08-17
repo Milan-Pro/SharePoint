@@ -1,11 +1,9 @@
+//this is grid demo without edit form just list view with sorting and searching.
 import * as React from 'react';
 import styles from './FluentUiDemo.module.scss';
 
 import { Fabric, Label, TextField, DetailsList, DetailsListLayoutMode,
   IColumn, SelectionMode, Selection,  MarqueeSelection, Panel, PanelType } from "office-ui-fabric-react";
-
-import { CourseProvider } from "../../../services/CourseProvider";
-import { ModifyCourse } from "./ModifyCourse";
 
 import { sp } from "@pnp/sp/presets/all";
 
@@ -31,14 +29,13 @@ interface IGridDemoState {
   columns: IColumn[];  
   currentItem: ICourse;
   showPane:boolean;
-  categories:string[]
 }
 
 
-export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoState> {
+export default class GridDemoSimple extends React.Component<IGridDemoProps, IGridDemoState> {
     //storing selected data in private variable
     private selections : Selection;
-    private provider : CourseProvider;
+
   
     private handleColumnClick = (event, column: IColumn) => {
       
@@ -117,7 +114,6 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
 
   constructor(props: IGridDemoProps) {
     super(props);
-    this.provider = new CourseProvider("Courses",this.props.context);
 
     sp.setup({
       spfxContext:this.props.context
@@ -138,28 +134,21 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
 
     this.state = {
         original: [],
-      data: [],
-      selectedData: [],
-      columns: this.columns,
-      currentItem: null,
-      showPane: false,
-      categories:[]
+        data: [],
+        selectedData: [],
+        columns: this.columns,
+        currentItem: null,
+        showPane: false
     };
 
   }
 
   public componentDidMount() {
-    this.provider.getCategories()
-      .then(items=>{
-        this.setState({
-          categories:items
-        });
-      });
-    this.provider.getItems()
+    sp.web.lists.getByTitle("Courses").items.get<ICourse[]>()
       .then(items => {
           this.setState({
-            original: items,
-            data: items
+            data: items,
+            original: items
           });
       })
       .catch(err => { 
@@ -192,36 +181,25 @@ export default class GridDemo extends React.Component<IGridDemoProps, IGridDemoS
                 items={ this.state.data }
                 isHeaderVisible={ true }
                 layoutMode={ DetailsListLayoutMode.justified }
-                selectionMode={ SelectionMode.single }
+                selectionMode={ SelectionMode.multiple }
                 columns={ this.state.columns }
                 selection={ this.selections }
                 compact={ true }
               />
             </MarqueeSelection>
 
-            {
-            this.state.showPane && <Panel type={ PanelType.medium } isOpen={ this.state.showPane } onDismiss={ ()=> {
+            <Panel type={ PanelType.medium } isOpen={ this.state.showPane } onDismiss={ ()=> {
               this.setState({
                 showPane: false
               });
             }}>
               <div> 
                 <h2>Edit Course</h2>
-                <ModifyCourse id={ this.state.currentItem["ID"]} 
-                    provider={ this.provider }
-                    categories={this.state.categories}
-                    onCancel={ () =>{
-                      this.setState({
-                        showPane:false
-                      });
-                    }}
-                    onSaved={ ()=>{
-                      
-                    }}
-                    />
+                <div>
+                  TBD: Show an Edit Form
+                </div>
               </div>
             </Panel>
-  }
             
             <div>
             {/*Showing selected data */}

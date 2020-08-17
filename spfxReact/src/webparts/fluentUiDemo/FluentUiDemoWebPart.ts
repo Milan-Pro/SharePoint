@@ -14,7 +14,13 @@ import { IFluentUiDemoProps } from './components/IFluentUiDemoProps';
 import DatePickerDemo from './components/DatePickerDemo';
 import PeoplePickerDemo from './components/PeoplePickerDemo';
 
+import GridDemoSimple from './components/GridDemoWithoutEdit';
+
 import GridDemo from "./components/GridDemo";
+
+import stackDemo from './components/StackDemo';
+
+import NavDemo from './components/NavDemo';
 
 export interface IFluentUiDemoWebPartProps {
   description: string;
@@ -48,14 +54,41 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentU
     )
     ReactDom.render(element, this.domElement); */
 
-    //Grid demo
-    const element = React.createElement(
+    //Grid Demo without Edit form
+    /* const element = React.createElement(
+      GridDemoSimple,
+      {
+        context: this.context
+      }
+    ); 
+    ReactDom.render(element, this.domElement);
+    */
+
+    //Grid demo with edit form in panel and dialogue
+    /* const element = React.createElement(
       GridDemo,
       {
         context: this.context
       }
-    );
+    ); 
+    ReactDom.render(element, this.domElement);*/
 
+    //StackDemo
+    /* const element = React.createElement(
+      stackDemo,
+      {
+        context:this.context
+      }
+    )
+    ReactDom.render(element, this.domElement); */
+
+    //NavDemo NavDemo command bars 
+    const element = React.createElement(
+      NavDemo,
+      {
+        context:this.context
+      }
+    )
     ReactDom.render(element, this.domElement);
   }
 
