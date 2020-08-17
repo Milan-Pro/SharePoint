@@ -22,6 +22,8 @@ import stackDemo from './components/StackDemo';
 
 import NavDemo from './components/NavDemo';
 
+import NavBarDemo from './components/NavBarDemo';
+
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
@@ -83,8 +85,17 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentU
     ReactDom.render(element, this.domElement); */
 
     //NavDemo NavDemo command bars 
-    const element = React.createElement(
+    /* const element = React.createElement(
       NavDemo,
+      {
+        context:this.context
+      }
+    )
+    ReactDom.render(element, this.domElement); */
+
+    //NavBar Demo
+    const element = React.createElement(
+      NavBarDemo,
       {
         context:this.context
       }
