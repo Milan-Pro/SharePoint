@@ -24,6 +24,8 @@ import NavDemo from './components/NavDemo';
 
 import NavBarDemo from './components/NavBarDemo';
 
+import PivotDemo from './components/PivotDemo';
+
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
@@ -94,8 +96,17 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentU
     ReactDom.render(element, this.domElement); */
 
     //NavBar Demo
-    const element = React.createElement(
+    /* const element = React.createElement(
       NavBarDemo,
+      {
+        context:this.context
+      }
+    )
+    ReactDom.render(element, this.domElement); */
+
+    //Pivot Control Demo Tabs like functionality
+    const element = React.createElement(
+      PivotDemo,
       {
         context:this.context
       }
