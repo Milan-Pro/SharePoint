@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "prop-pane-demo-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/propPaneDemo/PropPaneDemoWebPart.js",
+          "manifest": "./src/webparts/propPaneDemo/PropPaneDemoWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "PropPaneDemoWebPartStrings": "lib/webparts/propPaneDemo/loc/{locale}.js"
+  }
+}

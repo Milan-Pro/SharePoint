@@ -89,6 +89,14 @@
           "manifest": "./src/extensions/coursePage/CoursePageApplicationCustomizer.manifest.json"
         }
       ]
+    },
+    "prop-pane-demo-advance-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/propPaneDemoAdvance/PropPaneDemoAdvanceWebPart.js",
+          "manifest": "./src/webparts/propPaneDemoAdvance/PropPaneDemoAdvanceWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -103,6 +111,7 @@
     "CoursesWebPartStrings": "lib/webparts/courses/loc/{locale}.js",
     "SassDemoWebPartStrings": "lib/webparts/sassDemo/loc/{locale}.js",
     "PnPDemoWebPartStrings": "lib/webparts/pnPDemo/loc/{locale}.js",
-    "CoursePageApplicationCustomizerStrings": "lib/extensions/coursePage/loc/{locale}.js"
+    "CoursePageApplicationCustomizerStrings": "lib/extensions/coursePage/loc/{locale}.js",
+    "PropPaneDemoAdvanceWebPartStrings": "lib/webparts/propPaneDemoAdvance/loc/{locale}.js"
   }
 }
