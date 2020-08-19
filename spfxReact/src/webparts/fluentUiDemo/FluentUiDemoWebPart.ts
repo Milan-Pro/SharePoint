@@ -26,6 +26,10 @@ import NavBarDemo from './components/NavBarDemo';
 
 import PivotDemo from './components/PivotDemo';
 
+import TaxonomyDemo from './components/TaxonomyDemo';
+
+import MapDemo from './components/MapDemo';
+
 export interface IFluentUiDemoWebPartProps {
   description: string;
 }
@@ -105,8 +109,26 @@ export default class FluentUiDemoWebPart extends BaseClientSideWebPart <IFluentU
     ReactDom.render(element, this.domElement); */
 
     //Pivot Control Demo Tabs like functionality
-    const element = React.createElement(
+    /* const element = React.createElement(
       PivotDemo,
+      {
+        context:this.context
+      }
+    )
+    ReactDom.render(element, this.domElement); */
+
+    //Taxonomy Picker Demo
+    /* const element = React.createElement(
+      TaxonomyDemo,
+      {
+        context:this.context
+      }
+    )
+    ReactDom.render(element, this.domElement); */
+
+    //Map Demo
+    const element = React.createElement(
+      MapDemo,
       {
         context:this.context
       }
