@@ -9,10 +9,29 @@
           "manifest": "./src/webparts/propPaneDemo/PropPaneDemoWebPart.manifest.json"
         }
       ]
+    },
+    "prop-pane-react-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/propPaneReact/PropPaneReactWebPart.js",
+          "manifest": "./src/webparts/propPaneReact/PropPaneReactWebPart.manifest.json"
+        }
+      ]
+    },
+    "spfx-lib-library": {
+      "components": [
+        {
+          "entrypoint": "./lib/libraries/spfxLib/SpfxLibLibrary.js",
+          "manifest": "./src/libraries/spfxLib/SpfxLibLibrary.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "PropPaneDemoWebPartStrings": "lib/webparts/propPaneDemo/loc/{locale}.js"
+    "PropPaneDemoWebPartStrings": "lib/webparts/propPaneDemo/loc/{locale}.js",
+    "PropPaneReactWebPartStrings": "lib/webparts/propPaneReact/loc/{locale}.js",
+    "SpfxLibLibraryStrings": "lib/libraries/spfxLib/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
   }
 }

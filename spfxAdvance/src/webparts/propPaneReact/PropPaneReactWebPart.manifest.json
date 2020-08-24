@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
-  "id": "751e0559-5cde-42c2-8f37-667aca207b9d",
-  "alias": "PropPaneDemoWebPart",
+  "id": "b2011ca9-d3b0-468a-a94e-ed38cd70b105",
+  "alias": "PropPaneReactWebPart",
   "componentType": "WebPart",
 
   // The "*" signifies that the version should be taken from the package.json
@@ -17,12 +17,20 @@
   "preconfiguredEntries": [{
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
     "group": { "default": "Other" },
-    "title": { "default": "PropPaneDemo" },
-    "description": { "default": "How to Create our own property pane." },
+    "title": { "default": "PropPaneReact" },
+    "description": { "default": "PropPaneReact description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "count": "1.0",
-      "tax": 5
+      "course": {
+        "CourseID" : 1004,
+        "Title" : "Pascal Programming",
+        "Category" : "Programming Languages",
+        "Duration" : 20,
+        "Price" : 29,
+        "Technology": "",
+        "Description" : ""
+      },
+      "color": "#ffffff"
     }
   }]
 }
