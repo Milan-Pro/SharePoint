@@ -25,6 +25,22 @@
           "manifest": "./src/libraries/spfxLib/SpfxLibLibrary.manifest.json"
         }
       ]
+    },
+    "producer-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/producer/ProducerWebPart.js",
+          "manifest": "./src/webparts/producer/ProducerWebPart.manifest.json"
+        }
+      ]
+    },
+    "consumer-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/consumer/ConsumerWebPart.js",
+          "manifest": "./src/webparts/consumer/ConsumerWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -32,6 +48,8 @@
     "PropPaneDemoWebPartStrings": "lib/webparts/propPaneDemo/loc/{locale}.js",
     "PropPaneReactWebPartStrings": "lib/webparts/propPaneReact/loc/{locale}.js",
     "SpfxLibLibraryStrings": "lib/libraries/spfxLib/loc/{locale}.js",
-    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js",
+    "ProducerWebPartStrings": "lib/webparts/producer/loc/{locale}.js",
+    "ConsumerWebPartStrings": "lib/webparts/consumer/loc/{locale}.js"
   }
 }
