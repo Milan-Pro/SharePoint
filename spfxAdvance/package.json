@@ -28,7 +28,8 @@
     "@types/webpack-env": "1.13.1",
     "office-ui-fabric-react": "6.189.2",
     "react": "16.8.5",
-    "react-dom": "16.8.5"
+    "react-dom": "16.8.5",
+    "spfx-lib": "0.0.1"
   },
   "devDependencies": {
     "@microsoft/sp-build-web": "1.10.0",
