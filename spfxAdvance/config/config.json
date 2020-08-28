@@ -41,6 +41,14 @@
           "manifest": "./src/webparts/consumer/ConsumerWebPart.manifest.json"
         }
       ]
+    },
+    "graph-demo-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/graphDemo/GraphDemoWebPart.js",
+          "manifest": "./src/webparts/graphDemo/GraphDemoWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -50,6 +58,7 @@
     "SpfxLibLibraryStrings": "lib/libraries/spfxLib/loc/{locale}.js",
     "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js",
     "ProducerWebPartStrings": "lib/webparts/producer/loc/{locale}.js",
-    "ConsumerWebPartStrings": "lib/webparts/consumer/loc/{locale}.js"
+    "ConsumerWebPartStrings": "lib/webparts/consumer/loc/{locale}.js",
+    "GraphDemoWebPartStrings": "lib/webparts/graphDemo/loc/{locale}.js"
   }
 }
