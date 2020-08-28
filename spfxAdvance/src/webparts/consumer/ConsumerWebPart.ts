@@ -6,6 +6,7 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { escape } from '@microsoft/sp-lodash-subset';
 
+//This is responsible for consuming information from other werbpart in page
 import { IDynamicDataSource } from "@microsoft/sp-dynamic-data";
 
 import styles from './ConsumerWebPart.module.scss';

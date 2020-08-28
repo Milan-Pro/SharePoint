@@ -9,6 +9,7 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import styles from './ProducerWebPart.module.scss';
 import * as strings from 'ProducerWebPartStrings';
 
+//This is responsible for producing information for other werbpart to use in page.
 import { IDynamicDataCallables, IDynamicDataPropertyDefinition } from "@microsoft/sp-dynamic-data";
 
 export interface IProducerWebPartProps {
