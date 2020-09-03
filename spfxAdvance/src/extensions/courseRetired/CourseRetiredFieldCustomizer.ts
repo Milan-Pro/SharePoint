@@ -8,6 +8,8 @@ import {
   IFieldCustomizerCellEventParameters,
 } from '@microsoft/sp-listview-extensibility';
 
+import { sp, IItemUpdateResult } from "@pnp/sp/presets/all";
+
 import * as strings from 'CourseRetiredFieldCustomizerStrings';
 import CourseRetired, { ICourseRetiredProps } from './components/CourseRetired';
 
@@ -28,6 +30,10 @@ export default class CourseRetiredFieldCustomizer
 
   @override
   public onInit(): Promise<void> {
+    sp.setup({
+      spfxContext: this.context
+    });
+
     // Add your custom initialization to this method.  The framework will wait
     // for the returned promise to resolve before firing any BaseFieldCustomizer events.
     Log.info(LOG_SOURCE, 'Activated CourseRetiredFieldCustomizer with properties:');
@@ -44,9 +50,24 @@ export default class CourseRetiredFieldCustomizer
     const courseRetired: React.ReactElement<{}> =
       React.createElement(CourseRetired, 
         { 
+          id: parseInt(event.listItem.getValueByName("ID").toString()),
           retired: retired=="Yes" ? true: false,
-          onChanged: (checked: boolean) => {
-            alert("Checked :" + checked);
+          onChanged: (checked: boolean, id: number) => {
+            // Use PnP to Update
+            sp.web.lists.getByTitle('Courses').items.getById(id)
+              .get()
+              .then((item : any) => {
+                item.Retired = checked;
+
+                return sp.web.lists.getByTitle('Courses').items.getById(id)
+                          .update(item);
+              })
+              .then((res: IItemUpdateResult) =>{
+                console.log("Course Returied: " + checked + " Status updated!");
+              })
+              .catch(err=> {
+                console.log("Error updating retired status");
+              });
           }
         } as ICourseRetiredProps);
 

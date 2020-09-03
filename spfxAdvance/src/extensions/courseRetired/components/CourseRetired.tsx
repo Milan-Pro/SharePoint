@@ -7,8 +7,9 @@ import { Toggle } from "office-ui-fabric-react";
 import styles from './CourseRetired.module.scss';
 
 export interface ICourseRetiredProps {
+  id: number;
   retired: boolean;
-  onChanged(value: boolean) : void;
+  onChanged(value: boolean, id: number) : void;
 }
 
 const LOG_SOURCE: string = 'CourseRetired';
@@ -33,7 +34,7 @@ export default class CourseRetired extends React.Component<ICourseRetiredProps, 
             });
 
             if(this.props.onChanged) {
-              this.props.onChanged(checked);
+              this.props.onChanged(checked, this.props.id);
             }
         }} />
       </div>
