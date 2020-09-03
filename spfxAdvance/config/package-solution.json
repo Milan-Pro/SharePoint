@@ -6,7 +6,6 @@
     "version": "1.0.0.0",
     "includeClientSideAssets": true,
     "isDomainIsolated": false,
-    
     "webApiPermissionRequests": [
       {
         "resource": "Microsoft Graph",
@@ -19,10 +18,13 @@
       {
         "resource": "Microsoft Graph",
         "scope": "Directory.Read.All"
+      },
+      {
+        "resource": "amvitech",
+        "scope": "user_impersonation"
       }
     ]
   },
-  
   "paths": {
     "zippedPackage": "solution/spfx-advance.sppkg"
   }
