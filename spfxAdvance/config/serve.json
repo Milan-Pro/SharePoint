@@ -6,5 +6,40 @@
   "api": {
     "port": 5432,
     "entryPath": "node_modules/@microsoft/sp-webpart-workbench/lib/api/"
+  },
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://amvipearl.sharepoint.com/sites/AmviPearlTeam/Lists/Courses/AllItems.aspx",
+      "fieldCustomizers": {
+        "Retired": {
+          "id": "ccdd7d6f-a848-4918-9c11-77742d12857c",
+          "properties": {
+            "sampleText": "Value"
+          }
+        }
+      }
+    },
+    "products": {
+      "pageUrl": "https://amvipearl.sharepoint.com/sites/AmviPearlTeam/Lists/Products/AllItems.aspx",
+      "fieldCustomizers": {
+        "Tax": {
+          "id": "15b70a3c-d559-47e6-81e3-0e191ccabbbf",
+          "properties": {
+            "sampleText": "Value"
+          }
+        }
+      }
+    },
+    "courseRetired": {
+      "pageUrl": "https://amvipearl.sharepoint.com/sites/AmviPearlTeam/Lists/Courses/AllItems.aspx",
+      "fieldCustomizers": {
+        "Retired": {
+          "id": "ccdd7d6f-a848-4918-9c11-77742d12857c",
+          "properties": {
+            "sampleText": "Value"
+          }
+        }
+      }
+    }
   }
 }

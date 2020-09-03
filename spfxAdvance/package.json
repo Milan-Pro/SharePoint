@@ -29,7 +29,8 @@
     "office-ui-fabric-react": "6.189.2",
     "react": "16.8.5",
     "react-dom": "16.8.5",
-    "spfx-lib": "0.0.1"
+    "@microsoft/decorators": "1.10.0",
+    "@microsoft/sp-listview-extensibility": "1.10.0"
   },
   "devDependencies": {
     "@microsoft/sp-build-web": "1.10.0",

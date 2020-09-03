@@ -23,6 +23,19 @@
         "resource": "amvitech",
         "scope": "user_impersonation"
       }
+    ],
+    "features": [
+      {
+        "title": "Application Extension - Deployment of custom action.",
+        "description": "Deploys a custom action with ClientSideComponentId association",
+        "id": "8c93d769-afdd-4b2c-b22a-e05991a8194d",
+        "version": "1.0.0.0",
+        "assets": {
+          "elementManifests": [
+            "elements.xml"
+          ]
+        }
+      }
     ]
   },
   "paths": {

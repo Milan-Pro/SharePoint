@@ -1,0 +1,18 @@
+.Products {
+  .cell {
+    color: black;
+    display: 'inline-block';
+  }
+
+  .lowvalue {
+    background-color: lightgreen;
+  }
+
+  .medvalue {
+    background-color: lightskyblue;
+  }
+
+  .highvalue {
+    background-color: lightsalmon;
+  }
+}

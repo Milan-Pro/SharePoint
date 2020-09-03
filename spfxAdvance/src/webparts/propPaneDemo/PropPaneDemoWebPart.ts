@@ -13,7 +13,7 @@ import { escape } from '@microsoft/sp-lodash-subset';
 import styles from './PropPaneDemoWebPart.module.scss';
 import * as strings from 'PropPaneDemoWebPartStrings';
 
-import * as spfxlib from 'spfx-lib';
+//import * as spfxlib from 'spfx-lib';
 
 export interface IPropPaneDemoWebPartProps {
   count: number;
@@ -23,9 +23,9 @@ export default class PropPaneDemoWebPart extends BaseClientSideWebPart<IPropPane
 
   public render(): void {
 
-    let c = new spfxlib.SpfxLibLibrary();
+    //let c = new spfxlib.SpfxLibLibrary();
 ​
-    let s = c.Add(10,20);
+    //let s = c.Add(10,20);
 
 
     this.domElement.innerHTML = `
@@ -37,7 +37,7 @@ export default class PropPaneDemoWebPart extends BaseClientSideWebPart<IPropPane
               <p class="${ styles.subTitle }">Custom PropertyPane Controls.</p>
               <p class="${ styles.description }">Count: ${this.properties.count}</p>
               <p class="${ styles.description }">Tax: ${this.properties.tax}</p>
-              <p class="${ styles.description }">Sum (libcomp) : ${ s } </p>
+             
             </div>
           </div>
         </div>
