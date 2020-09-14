@@ -9,4 +9,12 @@
             Group="SPFx Columns"
             ClientSideComponentId="15b70a3c-d559-47e6-81e3-0e191ccabbbf">
     </Field>
+    <Field ID="{ef346b7d-c598-49fe-9bbd-7f4932a22a87}"
+            Name="Retired"
+            DisplayName="Retired"
+            Type="Boolean"
+            Required="TRUE"
+            Group="SPFx Columns"
+            ClientSideComponentId="ccdd7d6f-a848-4918-9c11-77742d12857c">
+    </Field>
 </Elements>

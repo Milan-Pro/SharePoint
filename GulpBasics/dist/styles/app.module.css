@@ -1,0 +1,11 @@
+.main .pagetitle {
+  font-size: x-large;
+  font-weight: bold;
+  color: darkslategray; }
+
+.main .item {
+  width: 90%;
+  background-color: lightskyblue;
+  color: black;
+  padding: 10px;
+  margin: 10px; }
