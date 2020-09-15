@@ -1,5 +1,6 @@
 import * as $ from "jquery";
 
+//Convert the webpart in to function or Object and eport that function or object.
 var getWeather = function(domElement) {
         var settings = {  
             "async": true,  
