@@ -1,6 +1,6 @@
 {
-  "name": "spfx-gulp",
-  "version": "1.0.1",
+  "name": "spfx-migrate",
+  "version": "0.0.1",
   "private": true,
   "main": "lib/index.js",
   "engines": {
@@ -30,6 +30,6 @@
     "@types/mocha": "2.2.38",
     "ajv": "~5.2.2",
     "gulp": "~3.9.1",
-    "gulp-image-resize": "^0.13.1"
+    "jquery": "^3.5.1"
   }
 }

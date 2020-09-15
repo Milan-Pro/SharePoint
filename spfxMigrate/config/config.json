@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "cities-map-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/citiesMap/CitiesMapWebPart.js",
+          "manifest": "./src/webparts/citiesMap/CitiesMapWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "CitiesMapWebPartStrings": "lib/webparts/citiesMap/loc/{locale}.js"
+  }
+}
