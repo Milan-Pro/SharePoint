@@ -9,10 +9,47 @@
           "manifest": "./src/webparts/citiesMap/CitiesMapWebPart.manifest.json"
         }
       ]
+    },
+    "csom-demo-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/csomDemo/CsomDemoWebPart.js",
+          "manifest": "./src/webparts/csomDemo/CsomDemoWebPart.manifest.json"
+        }
+      ]
     }
   },
-  "externals": {},
+  "externals": {
+    "Comment": "Below 4 file is required in order to migrate JSOM/CSOm objects",
+    "Comment1": "This command is require for type defination : npm install @types/microsoft-ajax @types/sharepoint --save-dev",
+    "sp-init" : {
+      "path" : "https://amvipearl.sharepoint.com/sites/AmviPearlTeam/_layouts/15/init.js",
+      "globalName": "$_global_init"
+    },
+    "microsoft-ajax" : {
+      "path": "https://amvipearl.sharepoint.com/sites/AmviPearlTeam/_layouts/15/MicrosoftAjax.js",
+      "globalName": "Sys",
+      "globalDependencies": [
+        "sp-init"
+      ]
+    },
+    "sp-runtime" : {
+      "path": "https://amvipearl.sharepoint.com/sites/AmviPearlTeam/_layouts/15/SP.Runtime.js",
+      "globalName": "SP",
+      "globalDependencies": [
+        "sp-init"
+      ]
+    },
+    "sharepoint" : {
+      "path": "https://amvipearl.sharepoint.com/sites/AmviPearlTeam/_layouts/15/SP.js",
+      "globalName": "SP",
+      "globalDependencies": [
+        "sp-runtime"
+      ]
+    }
+  },
   "localizedResources": {
-    "CitiesMapWebPartStrings": "lib/webparts/citiesMap/loc/{locale}.js"
+    "CitiesMapWebPartStrings": "lib/webparts/citiesMap/loc/{locale}.js",
+    "CsomDemoWebPartStrings": "lib/webparts/csomDemo/loc/{locale}.js"
   }
 }
