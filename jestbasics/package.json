@@ -1,0 +1,14 @@
+{
+  "name": "jestbasics",
+  "version": "1.0.0",
+  "description": "jest basics",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "author": "Milan",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.4.2"
+  }
+}
