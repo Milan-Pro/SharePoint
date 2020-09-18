@@ -9,7 +9,7 @@
   "scripts": {
     "build": "gulp bundle",
     "clean": "gulp clean",
-    "test": "./node_modules/.bin/jest --config ./config/jest.config.json",
+    "test": "jest",
     "test:watch": "./node_modules/.bin/jest --config ./config/jest.config.json --watchAll"
   },
   "dependencies": {
@@ -28,9 +28,52 @@
     "@microsoft/sp-tslint-rules": "1.10.0",
     "@microsoft/sp-webpart-workbench": "1.10.0",
     "@types/chai": "3.4.34",
+    "@types/jest": "^26.0.14",
     "@types/mocha": "2.2.38",
-    "@voitanos/jest-preset-spfx": "^1.2.2",
     "ajv": "~5.2.2",
-    "gulp": "~3.9.1"
+    "gulp": "~3.9.1",
+    "jest": "^26.4.2",
+    "jest-junit": "^11.1.0",
+    "ts-jest": "^26.3.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "**/src/**/*.test.+(ts|tsx|js)"
+    ],
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "cobertura"
+    ],
+    "coverageDirectory": "<rootDir>/jest",
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    },
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
+  },
+  "jest-junit": {
+    "output": "./jest/summary-jest-junit.xml"
   }
+
 }

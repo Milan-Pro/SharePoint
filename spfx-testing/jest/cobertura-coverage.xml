@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
+<coverage lines-valid="9" lines-covered="9" line-rate="1" branches-valid="0" branches-covered="0" branch-rate="1" timestamp="1600424972263" complexity="0" version="0.1">
+  <sources>
+    <source>C:\Users\d600888\Documents\SPFx Master\SharePoint\spfx-testing</source>
+  </sources>
+  <packages>
+    <class name="CustomerProvider.ts" filename="src\services\CustomerProvider.ts" line-rate="1" branch-rate="1">
+      <methods>
+        <method name="(anonymous_0)" hits="1" signature="()V">
+          <lines>
+            <line number="3" hits="1"/>
+          </lines>
+        </method>
+        <method name="CustomerProvider" hits="1" signature="()V">
+          <lines>
+            <line number="6" hits="1"/>
+          </lines>
+        </method>
+        <method name="(anonymous_2)" hits="1" signature="()V">
+          <lines>
+            <line number="10" hits="1"/>
+          </lines>
+        </method>
+        <method name="(anonymous_3)" hits="1" signature="()V">
+          <lines>
+            <line number="14" hits="1"/>
+          </lines>
+        </method>
+        <method name="(anonymous_4)" hits="1" signature="()V">
+          <lines>
+            <line number="18" hits="1"/>
+          </lines>
+        </method>
+      </methods>
+      <lines>
+        <line number="3" hits="1" branch="false"/>
+        <line number="4" hits="1" branch="false"/>
+        <line number="10" hits="1" branch="false"/>
+        <line number="11" hits="1" branch="false"/>
+        <line number="14" hits="1" branch="false"/>
+        <line number="15" hits="1" branch="false"/>
+        <line number="18" hits="1" branch="false"/>
+        <line number="19" hits="1" branch="false"/>
+        <line number="21" hits="1" branch="false"/>
+      </lines>
+    </class>
+  </packages>
+</coverage>
