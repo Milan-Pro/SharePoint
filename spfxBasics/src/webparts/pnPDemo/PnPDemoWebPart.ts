@@ -20,10 +20,10 @@ export interface IPnPDemoWebPartProps {
 }
 
 export default class PnPDemoWebPart extends BaseClientSideWebPart <IPnPDemoWebPartProps> {
-  private provider : CourseProvider;
+  private provider : ListProvider;
   ​
     protected onInit() : Promise<void> {
-      this.provider = new CourseProvider("Courses",this.context);
+      this.provider = new ListProvider("Courses",this.context);
   ​
       return Promise.resolve();
     }  

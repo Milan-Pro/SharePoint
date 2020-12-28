@@ -1,6 +1,13 @@
 @import '~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss';
 
 .spep {
+
+  .SpepNames{
+    padding: 2px;
+    margin: 2px;
+    background-color: dimgray;
+    border: 1px solid white;
+  }
   .container {
     max-width: 700px;
     margin: 0px auto;
