@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "spep-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/spep/SpepWebPart.js",
+          "manifest": "./src/webparts/spep/SpepWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "SpepWebPartStrings": "lib/webparts/spep/loc/{locale}.js"
+  }
+}
