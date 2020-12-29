@@ -8,6 +8,7 @@ import { escape } from '@microsoft/sp-lodash-subset';
 
 import styles from './SpepWebPart.module.scss';
 import * as strings from 'SpepWebPartStrings';
+import { HttpClient, IHttpClientOptions, HttpClientResponse } from '@microsoft/sp-http';
 
 import { sp } from "@pnp/sp/presets/all";
 import { IOwners } from "../../common/IOwners";
@@ -15,6 +16,8 @@ import { SpepList } from "../../services/ListProvider";
 
 export interface ISpepWebPartProps {
   description: string;
+  flowURL: string;
+  FlowURLLabel: string;
 }
 
 export default class SpepWebPart extends BaseClientSideWebPart <ISpepWebPartProps> {
@@ -33,13 +36,28 @@ export default class SpepWebPart extends BaseClientSideWebPart <ISpepWebPartProp
               <div class="${ styles.column }">
                 <span class="${ styles.title }">SPEP List</span>
                 <p class="${ styles.subTitle }">SPFx with elevated permission.</p>
+                <span class="${styles.title} ms-Grid-col ms-u-sm12 block">
+                   Item creation using SPFx & Flow
+                </span>
+                <div class="ms-Grid-col ms-u-sm12 block"><br/></div>
+                <div class="ms-TextField ms-Grid-col ms-u-sm12 block">
+                  <label class="ms-Label ms-Grid-col ms-u-sm4 block">Title</label>
+                  <input id="spfxflowIm" class="ms-TextField-field ms-Grid-col ms-u-sm8 block" value="" type="text" placeholder="">
+                </div>
+                <div class="ms-TextField ms-Grid-col ms-u-sm12 block"><br/></div>
+                <div class="ms-TextField ms-Grid-col ms-u-sm6 block"></div>
+                <div class="ms-TextField ms-Grid-col ms-u-sm6 block">
+                <button class="${styles.button} create-Button">
+                <span class="${styles.label}">Create Item</span>
+                </button></div>
+                <div id="status"></div>              
                 <p class="${ styles.description }" id="output">
-                </p>                
+                </p>
               </div>
             </div>
           </div>
         </div>`;
-
+        this.setButtonsEventHandlers();
         
   
         this.provider.getItems()
@@ -59,10 +77,47 @@ export default class SpepWebPart extends BaseClientSideWebPart <ISpepWebPartProp
           });
   }
 
+  private setButtonsEventHandlers(): void {
+    const webPart: SpepWebPart = this;
+    this.domElement.querySelector('button.create-Button').addEventListener('click', () => { webPart.createItem(); });
+  }
+ 
+  private createItem(): void {
+        let result: HTMLElement = document.getElementById("status");
+        let responseText: string = "";
+        //result.style.color = "white";
+        result.innerText = "Updating item...";
+        var itemTitle : string = (<HTMLInputElement>document.getElementById("spfxflowIm")).value;              
+        const postURL = this.properties.flowURL;   
+        const body: string = JSON.stringify({
+          'title': itemTitle,
+        });   
+        const requestHeaders: Headers = new Headers();       
+        requestHeaders.append('Content-type', 'application/json');
+        requestHeaders.append('Cache-Control', 'no-cache');   
+        const httpClientOptions: IHttpClientOptions = {
+          body: body,
+          headers: requestHeaders
+        };     
+        this.context.httpClient.post(
+          postURL,
+          HttpClient.configurations.v1,
+          httpClientOptions).then((response: HttpClientResponse) => {
+            response.json().then((responseJSON: JSON) => {
+              responseText = JSON.stringify(responseJSON);            
+            result.innerText = (responseText=="201")?"Item updated successfully":"Error received while updating item";
+          });
+        }).catch ((response: any) => {
+          let errMsg: string = `Error = ${response.message}`;
+          result.style.color = "red";
+          console.log(errMsg);
+          result.innerText = errMsg;
+        });
+  }
 
   protected get dataVersion(): Version {
   return Version.parse('1.0.0');
-}
+  }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
   return {
@@ -77,6 +132,9 @@ export default class SpepWebPart extends BaseClientSideWebPart <ISpepWebPartProp
             groupFields: [
               PropertyPaneTextField('description', {
                 label: strings.DescriptionFieldLabel
+              }),
+              PropertyPaneTextField('flowURL', {
+                label: strings.FlowURLLabel
               })
             ]
           }
