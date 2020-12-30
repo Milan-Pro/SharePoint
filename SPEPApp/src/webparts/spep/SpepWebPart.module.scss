@@ -2,11 +2,19 @@
 
 .spep {
 
-  .SpepNames{
+  .SpepTable{
     padding: 2px;
     margin: 2px;
+    background-color: white;
+    border: 1px solid rgb(185, 199, 206);
+    display: table;
+  }
+  .SpepCell{
+    padding: 5px;
+    margin: 5px;
     background-color: dimgray;
     border: 1px solid white;
+    display: table-cell;
   }
   .container {
     max-width: 700px;

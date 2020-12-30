@@ -43,11 +43,13 @@ export default class SpepWebPart extends BaseClientSideWebPart <ISpepWebPartProp
                 <div class="ms-TextField ms-Grid-col ms-u-sm12 block">
                   <label class="ms-Label ms-Grid-col ms-u-sm4 block">Title</label>
                   <input id="spfxflowIm" class="ms-TextField-field ms-Grid-col ms-u-sm8 block" value="" type="text" placeholder="">
+                  <label class="ms-Label ms-Grid-col ms-u-sm4 block">Description</label>
+                  <input id="spfxfdesc" class="ms-TextField-field ms-Grid-col ms-u-sm8 block" value="" type="text" placeholder="">
                 </div>
                 <div class="ms-TextField ms-Grid-col ms-u-sm12 block"><br/></div>
                 <div class="ms-TextField ms-Grid-col ms-u-sm6 block"></div>
                 <div class="ms-TextField ms-Grid-col ms-u-sm6 block">
-                <button class="${styles.button} create-Button">
+                <button class="${styles.button} create-Button" id="btnaddsave">
                 <span class="${styles.label}">Create Item</span>
                 </button></div>
                 <div id="status"></div>              
@@ -64,9 +66,9 @@ export default class SpepWebPart extends BaseClientSideWebPart <ISpepWebPartProp
           .then((Names : IOwners[]) =>{
             let html = "";  ​
             for(let c of Names) {
-              html+= `<div class="${ styles.SpepNames }">
-                        ${ c.Title } <br/>
-                        ${ c.Description }
+              html+= `<div class="${ styles.SpepTable }">
+                        <span class="${ styles.SpepCell }">${ c.Title } </span>
+                        <span class="${ styles.SpepCell }">${ c.Description }</span>
                       </div>`;            
               }  ​
             this.domElement.querySelector("#output").innerHTML = html;
@@ -78,19 +80,26 @@ export default class SpepWebPart extends BaseClientSideWebPart <ISpepWebPartProp
   }
 
   private setButtonsEventHandlers(): void {
+    /* let item : IOwners = {
+      Title: (<HTMLInputElement>document.getElementById("spfxflowIm")).value,
+      Description: (<HTMLInputElement>document.getElementById("spfxfdesc")).value
+    }; */
     const webPart: SpepWebPart = this;
     this.domElement.querySelector('button.create-Button').addEventListener('click', () => { webPart.createItem(); });
+    //this.domElement.querySelector('button.create-Button').addEventListener('click', () => { this.provider.addItem(item); });
   }
- 
+
   private createItem(): void {
         let result: HTMLElement = document.getElementById("status");
         let responseText: string = "";
         //result.style.color = "white";
         result.innerText = "Updating item...";
-        var itemTitle : string = (<HTMLInputElement>document.getElementById("spfxflowIm")).value;              
+        let itemTitle : string = document.getElementById("spfxflowIm")["value"];
+        let itemDesc: string =  document.getElementById("spfxfdesc")["value"];          
         const postURL = this.properties.flowURL;   
         const body: string = JSON.stringify({
-          'title': itemTitle,
+          'Title': itemTitle,
+          'Description' : itemDesc
         });   
         const requestHeaders: Headers = new Headers();       
         requestHeaders.append('Content-type', 'application/json');
